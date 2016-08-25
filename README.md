@@ -23,12 +23,17 @@ http://blog.csdn.net/zxt0601/article/details/52303781
 看本文如何巧用static类变量来解决这些矛盾冲突。
 
 【2 功能预览】：
+
 CstSwipeDelMenu 无阻塞式交互效果：
+
 ![image](https://github.com/mcxtzhang/SwipeDelMenuViewGroup/blob/master/gif/swipeDelete.gif) 
-CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果
+
+CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
+
 ![image](https://github.com/mcxtzhang/SwipeDelMenuViewGroup/blob/master/gif/swipeDelete2.gif) 
 
 包含且不仅包含以下功能
+
 1 侧滑拉出菜单。
 
 2 点击除了这个item的其他位置，菜单关闭。
