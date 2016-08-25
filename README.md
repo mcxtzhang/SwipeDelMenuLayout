@@ -50,12 +50,14 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
 【3 使用预览】
 
 需要效果一 ：直接拷贝 view包下的 CstSwipeDelMenu 
+
 需要效果二 ：直接拷贝 view包下的 CstIOSSwipeDelMenu 
 
-<mcxtzhang.swipedelmenu.view.CstIOSSwipeDelMenu xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true">
+
+`<mcxtzhang.swipedelmenu.view.CstIOSSwipeDelMenu xmlns:android="http://schemas.android.com/apk/res/android"`
+   ` android:layout_width="match_parent"`
+   ` android:layout_height="wrap_content"`
+  `  android:clickable="true">`
 
     <TextView
         android:id="@+id/tv"
@@ -70,8 +72,9 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
         android:layout_height="match_parent"
         android:background="@color/red_ff4a57"
         android:text="删除" />
+`</mcxtzhang.swipedelmenu.view.CstIOSSwipeDelMenu>`
 
-</mcxtzhang.swipedelmenu.view.CstIOSSwipeDelMenu>
+
 就这么简单，
 只需要在 侧滑删除的item的layout的xml里，将父控件换成我们的自定义ViewGroup即可。
 
