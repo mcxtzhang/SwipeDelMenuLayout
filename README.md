@@ -55,9 +55,9 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
 
 
 `<mcxtzhang.swipedelmenu.view.CstIOSSwipeDelMenu xmlns:android="http://schemas.android.com/apk/res/android"`
-   ` android:layout_width="match_parent"`
-   ` android:layout_height="wrap_content"`
-  `  android:clickable="true">`
+` android:layout_width="match_parent"`
+` android:layout_height="wrap_content"`
+` android:clickable="true">`
 
     <TextView
         android:id="@+id/tv"
