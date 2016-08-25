@@ -13,6 +13,7 @@ import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 /**
+ * 【Android特色版本侧滑菜单】
  * 继承自ViewGroup，实现滑动出现删除等选项的效果，
  * 思路：跟随手势将item向左滑动，
  * 在onMeasure时 将第一个Item设为屏幕宽度
@@ -29,7 +30,7 @@ import android.view.animation.OvershootInterpolator;
  * Created by zhangxutong .
  * Date: 16/04/24
  */
-public class CstSwipeDelMenuViewGroup extends ViewGroup {
+public class CstSwipeDelMenu extends ViewGroup {
     private static final String TAG = "zxt";
     private boolean isSwipeEnable = true;//右滑删除功能的开关,默认开
 
@@ -50,7 +51,7 @@ public class CstSwipeDelMenuViewGroup extends ViewGroup {
     private PointF mLastP = new PointF();
 
     //存储的是当前正在展开的View
-    private static CstSwipeDelMenuViewGroup mViewCache;
+    private static CstSwipeDelMenu mViewCache;
 
     //防止多只手指一起滑我的flag 在每次down里判断， touch事件结束清空
     private static boolean isTouching;
@@ -58,15 +59,15 @@ public class CstSwipeDelMenuViewGroup extends ViewGroup {
     private VelocityTracker mVelocityTracker;//滑动速度变量
     private android.util.Log LogUtils;
 
-    public CstSwipeDelMenuViewGroup(Context context) {
+    public CstSwipeDelMenu(Context context) {
         this(context, null);
     }
 
-    public CstSwipeDelMenuViewGroup(Context context, AttributeSet attrs) {
+    public CstSwipeDelMenu(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CstSwipeDelMenuViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CstSwipeDelMenu(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
