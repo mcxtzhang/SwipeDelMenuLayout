@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mcxtzhang.swipedelmenu.view.CstIOSSwipeDelMenu xmlns:android="http://schemas.android.com/apk/res/android"
+<mcxtzhang.swipedelmenu.view.CstSwipeDelMenu xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true">
@@ -43,4 +43,4 @@
             android:textColor="@android:color/white" />
     </RelativeLayout>
 
-</mcxtzhang.swipedelmenu.view.CstIOSSwipeDelMenu>
+</mcxtzhang.swipedelmenu.view.CstSwipeDelMenu>

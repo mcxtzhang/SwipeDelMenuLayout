@@ -203,15 +203,7 @@ public class CstSwipeDelMenu extends ViewGroup {
                         if (mViewCache != this) {
                             mViewCache.smoothClose();
                             mViewCache = null;
-                            //只要有一个侧滑菜单处于打开状态， 就不给外层布局上下滑动了
-                            getParent().requestDisallowInterceptTouchEvent(true);
-                            //add by zhangxutong 2016 09 05 begin
-                            //释放
-                            releaseVelocityTracker();
-                            //LogUtils.i(TAG, "onTouch A ACTION_UP ACTION_CANCEL:velocityY:" + velocityX);
-                            isTouching = false;//没有手指在摸我了
-                            return false;//同时取消此次事件
-                            //add by zhangxutong 2016 09 05 end
+
                         }
                         //只要有一个侧滑菜单处于打开状态， 就不给外层布局上下滑动了
                         getParent().requestDisallowInterceptTouchEvent(true);
