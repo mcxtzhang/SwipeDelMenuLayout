@@ -34,6 +34,7 @@ public class CstIOSSwipeDelMenu extends ViewGroup {
     private static final String TAG = "zxt";
     private boolean isSwipeEnable = true;//右滑删除功能的开关,默认开
 
+    private int mScaleTouchSlop;//为了处理单击事件的冲突
     private int mMaxVelocity;//计算滑动速度用
     private int mPointerId;//多点触摸只算第一根手指的速度
     private int mHeight;//自己的高度
@@ -88,6 +89,7 @@ public class CstIOSSwipeDelMenu extends ViewGroup {
     }
 
     private void init(Context context) {
+        mScaleTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mScreenW = getResources().getDisplayMetrics().widthPixels;
         mMaxVelocity = ViewConfiguration.get(context).getScaledMaximumFlingVelocity();
         //初始化滑动帮助类对象
@@ -277,6 +279,19 @@ public class CstIOSSwipeDelMenu extends ViewGroup {
         return super.dispatchTouchEvent(ev);
     }
 
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_UP:
+                //为了在侧滑时，屏蔽子View的点击事件
+                if (getScrollX() > mScaleTouchSlop) {
+                    return true;//true表示拦截
+                }
+                break;
+        }
+        return super.onInterceptTouchEvent(ev);
+    }
+
     /**
      * 平滑展开
      */
@@ -354,7 +369,7 @@ public class CstIOSSwipeDelMenu extends ViewGroup {
     //展开时，禁止长按
     @Override
     public boolean performLongClick() {
-        if (getScrollX() > 0) {
+        if (getScrollX() > mScaleTouchSlop) {
             return false;
         }
         return super.performLongClick();

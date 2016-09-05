@@ -25,8 +25,8 @@ import android.view.animation.OvershootInterpolator;
  * <p/>
  * 20160824,fix 【多指一起滑我的情况】：只接第一个客人(使用一个类静态布尔变量)
  * other:
- * 1 菜单处于侧滑时，拦截长按事件
- * 2
+ * 1 菜单处于侧滑时，拦截长按事件，拦截单击事件
+ * 2 解决长按 点击 的冲突
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -34,6 +34,7 @@ public class CstSwipeDelMenu extends ViewGroup {
     private static final String TAG = "zxt";
     private boolean isSwipeEnable = true;//右滑删除功能的开关,默认开
 
+    private int mScaleTouchSlop;//为了处理单击事件的冲突
     private int mMaxVelocity;//计算滑动速度用
     private int mPointerId;//多点触摸只算第一根手指的速度
     private int mHeight;//自己的高度
@@ -86,6 +87,7 @@ public class CstSwipeDelMenu extends ViewGroup {
     }
 
     private void init(Context context) {
+        mScaleTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mScreenW = getResources().getDisplayMetrics().widthPixels;
         mMaxVelocity = ViewConfiguration.get(context).getScaledMaximumFlingVelocity();
         //初始化滑动帮助类对象
@@ -201,6 +203,15 @@ public class CstSwipeDelMenu extends ViewGroup {
                         if (mViewCache != this) {
                             mViewCache.smoothClose();
                             mViewCache = null;
+                            //只要有一个侧滑菜单处于打开状态， 就不给外层布局上下滑动了
+                            getParent().requestDisallowInterceptTouchEvent(true);
+                            //add by zhangxutong 2016 09 05 begin
+                            //释放
+                            releaseVelocityTracker();
+                            //LogUtils.i(TAG, "onTouch A ACTION_UP ACTION_CANCEL:velocityY:" + velocityX);
+                            isTouching = false;//没有手指在摸我了
+                            return false;//同时取消此次事件
+                            //add by zhangxutong 2016 09 05 end
                         }
                         //只要有一个侧滑菜单处于打开状态， 就不给外层布局上下滑动了
                         getParent().requestDisallowInterceptTouchEvent(true);
@@ -264,6 +275,19 @@ public class CstSwipeDelMenu extends ViewGroup {
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_UP:
+                //为了在侧滑时，屏蔽子View的点击事件
+                if (getScrollX() > mScaleTouchSlop) {
+                    return true;//true表示拦截
+                }
+                break;
+        }
+        return super.onInterceptTouchEvent(ev);
     }
 
     /**
@@ -343,7 +367,7 @@ public class CstSwipeDelMenu extends ViewGroup {
     //展开时，禁止长按
     @Override
     public boolean performLongClick() {
-        if (getScrollX() > 0) {
+        if (getScrollX() > mScaleTouchSlop) {
             return false;
         }
         return super.performLongClick();
