@@ -25,8 +25,8 @@ import android.view.animation.OvershootInterpolator;
  * <p/>
  * 20160824,fix 【多指一起滑我的情况】：只接第一个客人(使用一个类静态布尔变量)
  * other:
- * 1 菜单处于侧滑时，拦截长按事件，拦截单击事件
- * 2 解决长按 点击 的冲突
+ * 1 菜单处于侧滑时，拦截长按事件
+ * 2 解决侧滑时 点击 的冲突
  * Created by zhangxutong .
  * Date: 16/04/24
  */
