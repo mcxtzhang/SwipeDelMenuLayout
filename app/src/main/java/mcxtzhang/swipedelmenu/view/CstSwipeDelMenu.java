@@ -275,7 +275,11 @@ public class CstSwipeDelMenu extends ViewGroup {
             case MotionEvent.ACTION_UP:
                 //为了在侧滑时，屏蔽子View的点击事件
                 if (getScrollX() > mScaleTouchSlop) {
-                    return true;//true表示拦截
+                    //add by 2016 09 10 解决一个智障问题~ 居然不给点击侧滑菜单 我跪着谢罪
+                    //这里判断落点在内容区域屏蔽点击，内容区域外，允许传递事件继续向下的的。。。
+                    if (ev.getX() < getWidth() - getScrollX()) {
+                        return true;//true表示拦截
+                    }
                 }
                 break;
         }

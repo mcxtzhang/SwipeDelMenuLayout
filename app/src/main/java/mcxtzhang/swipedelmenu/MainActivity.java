@@ -36,6 +36,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                holder.setOnClickListener(R.id.btnDelete, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, "删除:"+position, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
     }
