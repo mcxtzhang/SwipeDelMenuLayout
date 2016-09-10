@@ -55,17 +55,19 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
 需要效果二 ：直接使用，可能大部分公司比较钟爱IOS效果，我忍痛默认IOS
 
 
-`<mcxtzhang.swipedelmenu.view.CstSwipeDelMenu xmlns:android="http://schemas.android.com/apk/res/android"`
-` android:layout_width="match_parent"`
-` android:layout_height="wrap_content"`
-` android:clickable="true">`
+```
+<?xml version="1.0" encoding="utf-8"?>
+<mcxtzhang.swipedelmenu.view.CstSwipeDelMenu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true">
 
     <TextView
         android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="试试看" />
+        android:text="Content布局，项目中替换成你原来的Item布局" />
 
     <Button
         android:id="@+id/btnDelete"
@@ -73,8 +75,34 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
         android:layout_height="match_parent"
         android:background="@color/red_ff4a57"
         android:text="删除" />
-`</mcxtzhang.swipedelmenu.view.CstSwipeDelMenu>`
 
+    <Button
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:text="更新" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/red_ff4a57"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/point_icon_delete"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+</mcxtzhang.swipedelmenu.view.CstSwipeDelMenu>
+```
 
 就这么简单，
 只需要在 侧滑删除的item的layout的xml里，将父控件换成我们的自定义ViewGroup即可。
