@@ -60,6 +60,18 @@ public class CstSwipeDelMenu extends ViewGroup {
     private VelocityTracker mVelocityTracker;//滑动速度变量
     private android.util.Log LogUtils;
 
+    private boolean isIos = true;//IOS类型的开关
+
+    public boolean isIos() {
+        return isIos;
+    }
+
+    public void setIos(boolean ios) {
+        isIos = ios;
+    }
+
+    private boolean iosInterceptFlag = false;//IOS类型下，是否拦截事件的flag
+
     public CstSwipeDelMenu(Context context) {
         this(context, null);
     }
@@ -191,6 +203,7 @@ public class CstSwipeDelMenu extends ViewGroup {
             final VelocityTracker verTracker = mVelocityTracker;
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    iosInterceptFlag = false;//add by 2016 09 11 ，每次DOWN时，默认是不拦截的
                     if (isTouching) {//如果有别的指头摸过了，那么就return false。这样后续的move..等事件也不会再来找这个View了。
                         return false;
                     } else {
@@ -203,7 +216,7 @@ public class CstSwipeDelMenu extends ViewGroup {
                         if (mViewCache != this) {
                             mViewCache.smoothClose();
                             mViewCache = null;
-
+                            iosInterceptFlag = isIos;//add by 2016 09 11 ，IOS模式开启的话，且当前有侧滑菜单的View，且不是自己的，就该拦截事件咯。
                         }
                         //只要有一个侧滑菜单处于打开状态， 就不给外层布局上下滑动了
                         getParent().requestDisallowInterceptTouchEvent(true);
@@ -212,6 +225,10 @@ public class CstSwipeDelMenu extends ViewGroup {
                     mPointerId = ev.getPointerId(0);
                     break;
                 case MotionEvent.ACTION_MOVE:
+                    //add by 2016 09 11 ，IOS模式开启的话，且当前有侧滑菜单的View，且不是自己的，就该拦截事件咯。滑动也不该出现
+                    if (iosInterceptFlag){
+                        break;
+                    }
                     float gap = mLastP.x - ev.getRawX();
                     //为了在水平滑动中禁止父类ListView等再竖直滑动
                     if (gap > ViewConfiguration.get(getContext()).getScaledTouchSlop()) {
@@ -233,28 +250,31 @@ public class CstSwipeDelMenu extends ViewGroup {
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    //求伪瞬时速度
-                    verTracker.computeCurrentVelocity(1000, mMaxVelocity);
-                    final float velocityX = verTracker.getXVelocity(mPointerId);
-                    if (Math.abs(velocityX) > 1000) {//滑动速度超过阈值
-                        if (velocityX < -1000) {
-                            //平滑展开Menu
-                            smoothExpand();
-                            //展开就加入ViewCache：
-                            mViewCache = this;
+                    //add by 2016 09 11 ，IOS模式开启的话，且当前有侧滑菜单的View，且不是自己的，就该拦截事件咯。滑动也不该出现
+                    if (!iosInterceptFlag){
+                        //求伪瞬时速度
+                        verTracker.computeCurrentVelocity(1000, mMaxVelocity);
+                        final float velocityX = verTracker.getXVelocity(mPointerId);
+                        if (Math.abs(velocityX) > 1000) {//滑动速度超过阈值
+                            if (velocityX < -1000) {
+                                //平滑展开Menu
+                                smoothExpand();
+                                //展开就加入ViewCache：
+                                mViewCache = this;
+                            } else {
+                                //平滑关闭Menu
+                                smoothClose();
+                            }
                         } else {
-                            //平滑关闭Menu
-                            smoothClose();
-                        }
-                    } else {
-                        if (getScrollX() > mLimit) {//否则就判断滑动距离
-                            //平滑展开Menu
-                            smoothExpand();
-                            //展开就加入ViewCache：
-                            mViewCache = this;
-                        } else {
-                            //平滑关闭Menu
-                            smoothClose();
+                            if (getScrollX() > mLimit) {//否则就判断滑动距离
+                                //平滑展开Menu
+                                smoothExpand();
+                                //展开就加入ViewCache：
+                                mViewCache = this;
+                            } else {
+                                //平滑关闭Menu
+                                smoothClose();
+                            }
                         }
                     }
                     //释放
@@ -283,6 +303,12 @@ public class CstSwipeDelMenu extends ViewGroup {
                 }
                 break;
         }
+        //模仿IOS 点击其他区域关闭：
+        if (iosInterceptFlag){
+            //IOS模式开启，且当前有菜单的View，且不是自己的 拦截点击事件给子View
+            return true;
+        }
+
         return super.onInterceptTouchEvent(ev);
     }
 

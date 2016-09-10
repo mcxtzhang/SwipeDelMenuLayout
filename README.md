@@ -50,12 +50,12 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
 
 【3 使用预览】
 
-需要效果一 ：直接拷贝 view包下的 CstSwipeDelMenu 
+需要效果一 ：//((CstSwipeDelMenu)holder.getConvertView()).setIos(false);//这句话关掉IOS阻塞式交互效果
 
-需要效果二 ：直接拷贝 view包下的 CstIOSSwipeDelMenu 
+需要效果二 ：直接使用，可能大部分公司比较钟爱IOS效果，我忍痛默认IOS
 
 
-`<mcxtzhang.swipedelmenu.view.CstIOSSwipeDelMenu xmlns:android="http://schemas.android.com/apk/res/android"`
+`<mcxtzhang.swipedelmenu.view.CstSwipeDelMenu xmlns:android="http://schemas.android.com/apk/res/android"`
 ` android:layout_width="match_parent"`
 ` android:layout_height="wrap_content"`
 ` android:clickable="true">`
@@ -73,7 +73,7 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
         android:layout_height="match_parent"
         android:background="@color/red_ff4a57"
         android:text="删除" />
-`</mcxtzhang.swipedelmenu.view.CstIOSSwipeDelMenu>`
+`</mcxtzhang.swipedelmenu.view.CstSwipeDelMenu>`
 
 
 就这么简单，

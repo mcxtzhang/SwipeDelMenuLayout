@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         mLv.setAdapter(new CommonAdapter<SwipeBean>(this, mDatas, R.layout./*item_swipe_menu*/item_cst_swipe) {
             @Override
             public void convert(ViewHolder holder, SwipeBean swipeBean, final int position, View convertView) {
+                //((CstSwipeDelMenu)holder.getConvertView()).setIos(false);//这句话关掉IOS阻塞式交互效果
                 holder.setText(R.id.tv, swipeBean.name);
                 holder.setOnClickListener(R.id.tv, new View.OnClickListener() {
                     @Override
