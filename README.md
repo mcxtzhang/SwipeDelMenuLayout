@@ -14,7 +14,12 @@ http://blog.csdn.net/zxt0601/article/details/52303781
 
 况且现在是RecyclerView时代，难不成我要把那些代码再自定义RecyclerView写一遍么。
 
-我想说No，听说隔壁iOS 侧滑删除是一个系统自带的控件，那么我们Android党能否也自定义一个ViewGroup控件，然后一劳永逸，每次简单拿来用就好了呢?
+我想说No，网上大多数的做法代码侵入性太强，尽量不要继承 ListVIew 做什么事，换成 RecyclerView 呢，扩展性太局限了，
+
+本文的做法只要在 Item 的根布局换成这个 自定义ViewGroup 即可，完全不 care 你用 RecyclerView 还是 ListVIew，耦合性为 0
+
+
+听说隔壁iOS 侧滑删除是一个系统自带的控件，那么我们Android党能否也自定义一个ViewGroup控件，然后一劳永逸，每次简单拿来用就好了呢?
 
 自定义ViewGroup实现侧滑删除简单，难得是还要同时 处理多指滑动的屏蔽，防止两个侧滑菜单同时出现，等等，
 
