@@ -23,7 +23,7 @@ https://github.com/mcxtzhang
 ***
 
 ###2016 09 12 更新点###
-1 一个用RecyclerView实现的完整删除Demo 供不会用的同学参考。
+1 增加用RecyclerView、ListView实现的完整删除Demo 供不会用的同学参考。
 
 2 增加一个quickClose()方法，更好的在ListView中使用，不过还是推荐大家用RecyclerView。
 
