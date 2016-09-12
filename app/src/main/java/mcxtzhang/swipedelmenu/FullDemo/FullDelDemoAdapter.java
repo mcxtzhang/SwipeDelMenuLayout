@@ -38,6 +38,7 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
 
     @Override
     public void onBindViewHolder(final FullDelDemoVH holder, int position) {
+        //((CstSwipeDelMenu)holder.itemView).setIos(false);//这句话关掉IOS阻塞式交互效果
         holder.tv.setText(mDatas.get(position).name);
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
