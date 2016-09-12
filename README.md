@@ -1,3 +1,7 @@
+# SwipeDelMenuViewGroup
+相关博文：
+http://blog.csdn.net/zxt0601/article/details/52303781
+
 欢迎star 关注 
 ## 作者相关：
 
@@ -18,15 +22,10 @@ http://www.jianshu.com/users/8e91ff99b072/timeline
 https://github.com/mcxtzhang
 ***
 
-
-# SwipeDelMenuViewGroup
-相关博文：
-
-http://blog.csdn.net/zxt0601/article/details/52303781
-
-==20160912 更新：==
+###2016 09 12 更新点###
 1 一个用RecyclerView实现的完整删除Demo 供不会用的同学参考。
 
+***
 【1 序言】
 侧滑删除的轮子网上有很多，最初在github上看过一个，还是ListView时代，那是一个自定义ListView 实现侧滑删除的，当初就觉得这种做法不是最佳，万一我项目里又同时有自定义ListView的需求，会增加复杂度。
 
