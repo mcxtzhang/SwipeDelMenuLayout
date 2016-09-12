@@ -38,7 +38,10 @@ public class FullDelDemoActivity extends Activity {
             public void onDel(int pos) {
                 Toast.makeText(FullDelDemoActivity.this, "删除:" + pos, Toast.LENGTH_SHORT).show();
                 mDatas.remove(pos);
-                mAdapter.notifyItemRemoved(pos);
+                mAdapter.notifyItemRemoved(pos);//推荐用这个
+                //如果删除时，不使用mAdapter.notifyItemRemoved(pos)，则删除没有动画效果，
+                //且如果想让侧滑菜单同时关闭，需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
+                //mAdapter.notifyDataSetChanged();
             }
         });
         mRv.setAdapter(mAdapter);

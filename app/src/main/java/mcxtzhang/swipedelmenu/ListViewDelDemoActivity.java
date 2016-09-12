@@ -12,8 +12,9 @@ import java.util.List;
 import mcxtzhang.listswipemenudemo.R;
 import mcxtzhang.swipedelmenu.utils.CommonAdapter;
 import mcxtzhang.swipedelmenu.utils.ViewHolder;
+import mcxtzhang.swipedelmenu.view.CstSwipeDelMenu;
 
-public class MainActivity extends AppCompatActivity {
+public class ListViewDelDemoActivity extends AppCompatActivity {
     private static final String TAG = "zxt";
     private ListView mLv;
     private List<SwipeBean> mDatas;
@@ -27,20 +28,24 @@ public class MainActivity extends AppCompatActivity {
         initDatas();
         mLv.setAdapter(new CommonAdapter<SwipeBean>(this, mDatas, R.layout./*item_swipe_menu*/item_cst_swipe) {
             @Override
-            public void convert(ViewHolder holder, SwipeBean swipeBean, final int position, View convertView) {
+            public void convert(final ViewHolder holder, SwipeBean swipeBean, final int position, View convertView) {
                 //((CstSwipeDelMenu)holder.getConvertView()).setIos(false);//这句话关掉IOS阻塞式交互效果
                 holder.setText(R.id.tv, swipeBean.name);
                 holder.setOnClickListener(R.id.tv, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(MainActivity.this, "position:"+position, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ListViewDelDemoActivity.this, "position:" + position, Toast.LENGTH_SHORT).show();
                     }
                 });
 
                 holder.setOnClickListener(R.id.btnDelete, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(MainActivity.this, "删除:"+position, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ListViewDelDemoActivity.this, "删除:" + position, Toast.LENGTH_SHORT).show();
+                        //在ListView里，点击侧滑菜单上的选项时，如果想让擦花菜单同时关闭，调用这句话
+                        ((CstSwipeDelMenu) holder.getConvertView()).quickClose();
+                        mDatas.remove(position);
+                        notifyDataSetChanged();
                     }
                 });
 

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mcxtzhang.swipedelmenu.MainActivity">
+    tools:context="mcxtzhang.swipedelmenu.ListViewDelDemoActivity">
 
     <ListView
         android:id="@+id/test"
