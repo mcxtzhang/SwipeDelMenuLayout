@@ -24,6 +24,7 @@ https://github.com/mcxtzhang
 
 ###2016 09 12 更新点###
 1 一个用RecyclerView实现的完整删除Demo 供不会用的同学参考。
+
 2 增加一个quickClose()方法，更好的在ListView中使用，不过还是推荐大家用RecyclerView。
 
 ***
@@ -137,8 +138,18 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
 从第二个子View开始，是我们的侧滑菜单区域，如我们的demo图，是三个Button。
 
 **另外**，
-//在ListView里，点击侧滑菜单上的选项时，如果想让侧滑菜单同时关闭，调用这句话
-((CstSwipeDelMenu) holder.getConvertView()).quickClose();
-推荐使用RecyclerView，
-//在RecyclerView中，如果删除时，不使用mAdapter.notifyItemRemoved(pos)，则删除没有动画效果，
-//且如果想让侧滑菜单同时关闭，也需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
+另外， 201609012补充：
+
+在ListView里，点击侧滑菜单上的选项时，如果想让侧滑菜单同时关闭，
+
+将ItemView强转成CstSwipeDelMenu，并调用quickClose()。
+
+如((CstSwipeDelMenu) holder.getConvertView()).quickClose(); 
+
+
+推荐使用RecyclerView， 
+
+在RecyclerView中，如果删除时，不使用mAdapter.notifyItemRemoved(pos)，则删除没有动画效果， 
+
+且如果想让侧滑菜单同时关闭，也需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
+
