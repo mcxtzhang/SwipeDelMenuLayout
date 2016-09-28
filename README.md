@@ -22,10 +22,17 @@ http://www.jianshu.com/users/8e91ff99b072/timeline
 https://github.com/mcxtzhang
 ***
 
-###2016 09 12 更新点###
+###更新点###
+
+2016 09 12 更新点
+
 1 增加用RecyclerView、ListView实现的完整删除Demo 供不会用的同学参考。
 
 2 增加一个quickClose()方法，更好的在ListView中使用，不过还是推荐大家用RecyclerView。
+
+2016 09 28 更新点：
+
+1 增加一个item点击事件设置的示例。
 
 ***
 【1 序言】
@@ -89,7 +96,7 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
     android:clickable="true">
 
     <TextView
-        android:id="@+id/tv"
+        android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -136,6 +143,17 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
 第一个子View放置item的内容即可(正式项目里一般是一个ViewGroup)，
 
 从第二个子View开始，是我们的侧滑菜单区域，如我们的demo图，是三个Button。
+
+```
+//注意事项，设置item点击，不能对整个holder.itemView设置咯，只能对第一个子View，即原来的content设置，这算是局限性吧。
+(holder.content).setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(mContext, ""+mDatas.get(position).name, Toast.LENGTH_SHORT).show();
+    }
+});
+```
+
 
 **另外**，
 201609012补充：
