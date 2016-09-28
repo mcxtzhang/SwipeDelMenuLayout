@@ -2,11 +2,13 @@ package mcxtzhang.swipedelmenu.FullDemo;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -37,9 +39,9 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final FullDelDemoVH holder, int position) {
+    public void onBindViewHolder(final FullDelDemoVH holder, final int position) {
         //((CstSwipeDelMenu)holder.itemView).setIos(false);//这句话关掉IOS阻塞式交互效果
-        holder.tv.setText(mDatas.get(position).name);
+        holder.content.setText(mDatas.get(position).name);
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +51,14 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
                     //((CstSwipeDelMenu) holder.itemView).quickClose();
                     mOnDelListener.onDel(holder.getAdapterPosition());
                 }
+            }
+        });
+        //注意事项，设置item点击，不能对整个holder.itemView设置咯，只能对第一个子View，即原来的content设置，这算是局限性吧。
+        (holder.content).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, ""+mDatas.get(position).name, Toast.LENGTH_SHORT).show();
+                Log.d("TAG", "onClick() called with: v = [" + v + "]");
             }
         });
     }
@@ -76,12 +86,12 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
     }
 
     class FullDelDemoVH extends RecyclerView.ViewHolder {
-        TextView tv;
+        TextView content;
         Button btnDelete;
 
         public FullDelDemoVH(View itemView) {
             super(itemView);
-            tv = (TextView) itemView.findViewById(R.id.tv);
+            content = (TextView) itemView.findViewById(R.id.content);
             btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
         }
     }
