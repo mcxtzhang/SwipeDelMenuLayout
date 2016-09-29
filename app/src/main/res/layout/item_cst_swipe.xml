@@ -2,8 +2,7 @@
 <mcxtzhang.swipedelmenu.view.CstSwipeDelMenu
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-
+    android:layout_height="100dp"
     android:clickable="true"
     android:paddingBottom="1dp">
 
@@ -16,18 +15,20 @@
         android:text="试试看"/>
 
     <Button
+        android:id="@+id/update"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:background="#c3c1c1"
+        android:text="标记未读"/>
+
+    <Button
         android:id="@+id/btnDelete"
         android:layout_width="60dp"
         android:layout_height="match_parent"
         android:background="@color/red_ff4a57"
         android:text="删除"/>
 
-    <Button
-        android:id="@+id/update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:text="更新"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
