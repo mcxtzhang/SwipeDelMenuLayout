@@ -233,7 +233,7 @@ public class CstSwipeDelMenu extends ViewGroup {
                     }
                     float gap = mLastP.x - ev.getRawX();
                     //为了在水平滑动中禁止父类ListView等再竖直滑动
-                    if (gap > mScaleTouchSlop || getScrollX() > mScaleTouchSlop) {
+                    if (gap > 10 || getScrollX() > 10) {//2016 09 29 修改此处，使屏蔽父布局滑动更加灵敏，
                         getParent().requestDisallowInterceptTouchEvent(true);
                     }
                     //如果scroller还没有滑动结束 停止滑动动画
