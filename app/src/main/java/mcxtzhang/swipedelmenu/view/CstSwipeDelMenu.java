@@ -13,7 +13,7 @@ import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 /**
- * 【Android特色版本侧滑菜单】
+ * 【Item侧滑删除菜单】
  * 继承自ViewGroup，实现滑动出现删除等选项的效果，
  * 思路：跟随手势将item向左滑动，
  * 在onMeasure时 将第一个Item设为屏幕宽度
@@ -27,6 +27,8 @@ import android.view.animation.OvershootInterpolator;
  * other:
  * 1 菜单处于侧滑时，拦截长按事件
  * 2 解决侧滑时 点击 的冲突
+ * 3 通过 isIos 变量控制是否是IOS阻塞式交互，默认是打开的。
+ * 4 通过 isSwipeEnable 变量控制是否开启右滑菜单，默认打开。（某些场景，复用item，没有编辑权限的用户不能右滑）
  * Created by zhangxutong .
  * Date: 16/04/24
  */
