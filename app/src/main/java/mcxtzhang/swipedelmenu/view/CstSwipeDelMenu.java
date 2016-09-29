@@ -13,7 +13,7 @@ import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 /**
- * 【Android特色版本侧滑菜单】
+ * 【Item侧滑删除菜单】
  * 继承自ViewGroup，实现滑动出现删除等选项的效果，
  * 思路：跟随手势将item向左滑动，
  * 在onMeasure时 将第一个Item设为屏幕宽度
@@ -27,6 +27,8 @@ import android.view.animation.OvershootInterpolator;
  * other:
  * 1 菜单处于侧滑时，拦截长按事件
  * 2 解决侧滑时 点击 的冲突
+ * 3 通过 isIos 变量控制是否是IOS阻塞式交互，默认是打开的。
+ * 4 通过 isSwipeEnable 变量控制是否开启右滑菜单，默认打开。（某些场景，复用item，没有编辑权限的用户不能右滑）
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -226,12 +228,12 @@ public class CstSwipeDelMenu extends ViewGroup {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     //add by 2016 09 11 ，IOS模式开启的话，且当前有侧滑菜单的View，且不是自己的，就该拦截事件咯。滑动也不该出现
-                    if (iosInterceptFlag){
+                    if (iosInterceptFlag) {
                         break;
                     }
                     float gap = mLastP.x - ev.getRawX();
                     //为了在水平滑动中禁止父类ListView等再竖直滑动
-                    if (gap > ViewConfiguration.get(getContext()).getScaledTouchSlop()) {
+                    if (gap > 10 || getScrollX() > 10) {//2016 09 29 修改此处，使屏蔽父布局滑动更加灵敏，
                         getParent().requestDisallowInterceptTouchEvent(true);
                     }
                     //如果scroller还没有滑动结束 停止滑动动画
@@ -251,7 +253,7 @@ public class CstSwipeDelMenu extends ViewGroup {
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     //add by 2016 09 11 ，IOS模式开启的话，且当前有侧滑菜单的View，且不是自己的，就该拦截事件咯。滑动也不该出现
-                    if (!iosInterceptFlag){
+                    if (!iosInterceptFlag) {
                         //求伪瞬时速度
                         verTracker.computeCurrentVelocity(1000, mMaxVelocity);
                         final float velocityX = verTracker.getXVelocity(mPointerId);
@@ -304,7 +306,7 @@ public class CstSwipeDelMenu extends ViewGroup {
                 break;
         }
         //模仿IOS 点击其他区域关闭：
-        if (iosInterceptFlag){
+        if (iosInterceptFlag) {
             //IOS模式开启，且当前有菜单的View，且不是自己的 拦截点击事件给子View
             return true;
         }
@@ -315,18 +317,20 @@ public class CstSwipeDelMenu extends ViewGroup {
     /**
      * 平滑展开
      */
+    private ValueAnimator mExpandAnim, mCloseAnim;
+
     public void smoothExpand() {
         /*mScroller.startScroll(getScrollX(), 0, mRightMenuWidths - getScrollX(), 0);
         invalidate();*/
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(getScrollX(), mRightMenuWidths);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mExpandAnim = ValueAnimator.ofInt(getScrollX(), mRightMenuWidths);
+        mExpandAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 scrollTo((Integer) animation.getAnimatedValue(), 0);
             }
         });
-        valueAnimator.setInterpolator(new OvershootInterpolator());
-        valueAnimator.setDuration(300).start();
+        mExpandAnim.setInterpolator(new OvershootInterpolator());
+        mExpandAnim.setDuration(300).start();
     }
 
     /**
@@ -335,15 +339,15 @@ public class CstSwipeDelMenu extends ViewGroup {
     public void smoothClose() {
 /*        mScroller.startScroll(getScrollX(), 0, -getScrollX(), 0);
         invalidate();*/
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(getScrollX(), 0);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mCloseAnim = ValueAnimator.ofInt(getScrollX(), 0);
+        mCloseAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 scrollTo((Integer) animation.getAnimatedValue(), 0);
             }
         });
-        valueAnimator.setInterpolator(new AnticipateInterpolator());
-        valueAnimator.setDuration(300).start();
+        mCloseAnim.setInterpolator(new AnticipateInterpolator());
+        mCloseAnim.setDuration(300).start();
         //LogUtils.d(TAG, "smoothClose() called with:getScrollX() " + getScrollX());
     }
 
@@ -405,5 +409,22 @@ public class CstSwipeDelMenu extends ViewGroup {
             invalidate();
         }
     }*/
+
+    /**
+     * 快速关闭。
+     * 用于 点击侧滑菜单上的选项,同时想让它快速关闭(删除 置顶)。
+     * 这个方法在ListView里是必须调用的，
+     * 在RecyclerView里，视情况而定，如果是mAdapter.notifyItemRemoved(pos)方法不用调用。
+     */
+    public void quickClose() {
+        if (this == mViewCache) {
+            //先取消展开动画
+            if (null != mExpandAnim && mExpandAnim.isRunning()) {
+                mExpandAnim.cancel();
+            }
+            mViewCache.scrollTo(0, 0);//关闭
+            mViewCache = null;
+        }
+    }
 
 }
