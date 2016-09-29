@@ -30,8 +30,8 @@ public class ListViewDelDemoActivity extends AppCompatActivity {
             @Override
             public void convert(final ViewHolder holder, SwipeBean swipeBean, final int position, View convertView) {
                 //((CstSwipeDelMenu)holder.getConvertView()).setIos(false);//这句话关掉IOS阻塞式交互效果
-                holder.setText(R.id.tv, swipeBean.name);
-                holder.setOnClickListener(R.id.tv, new View.OnClickListener() {
+                holder.setText(R.id.content, swipeBean.name);
+                holder.setOnClickListener(R.id.content, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(ListViewDelDemoActivity.this, "position:" + position, Toast.LENGTH_SHORT).show();
