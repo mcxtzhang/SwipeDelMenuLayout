@@ -29,6 +29,7 @@ import android.view.animation.OvershootInterpolator;
  * 2 解决侧滑时 点击 的冲突
  * 3 通过 isIos 变量控制是否是IOS阻塞式交互，默认是打开的。
  * 4 通过 isSwipeEnable 变量控制是否开启右滑菜单，默认打开。（某些场景，复用item，没有编辑权限的用户不能右滑）
+ * 5 2016 09 29 add,，通过开关 isLeftSwipe支持左滑右滑
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -73,6 +74,9 @@ public class CstSwipeDelMenu extends ViewGroup {
     }
 
     private boolean iosInterceptFlag = false;//IOS类型下，是否拦截事件的flag
+
+    //20160929add 左滑右滑
+    private boolean isLeftSwipe = false;
 
     public CstSwipeDelMenu(Context context) {
         this(context, null);
@@ -182,6 +186,7 @@ public class CstSwipeDelMenu extends ViewGroup {
         //LogUtils.d(TAG, "onLayout() called with: " + "changed = [" + changed + "], l = [" + l + "], t = [" + t + "], r = [" + r + "], b = [" + b + "]");
         int childCount = getChildCount();
         int left = l;
+        int right = 0;
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
             if (childView.getVisibility() != GONE) {
@@ -189,8 +194,14 @@ public class CstSwipeDelMenu extends ViewGroup {
                     childView.layout(left, getPaddingTop(), left + mScreenW, getPaddingTop() + childView.getMeasuredHeight());
                     left = left + mScreenW;
                 } else {
-                    childView.layout(left, getPaddingTop(), left + childView.getMeasuredWidth(), getPaddingTop() + childView.getMeasuredHeight());
-                    left = left + childView.getMeasuredWidth();
+                    if (isLeftSwipe) {
+                        childView.layout(left, getPaddingTop(), left + childView.getMeasuredWidth(), getPaddingTop() + childView.getMeasuredHeight());
+                        left = left + childView.getMeasuredWidth();
+                    } else {
+                        childView.layout(right - childView.getMeasuredWidth(), getPaddingTop(), right, getPaddingTop() + childView.getMeasuredHeight());
+                        right = right - childView.getMeasuredWidth();
+                    }
+
                 }
             }
         }
@@ -233,7 +244,7 @@ public class CstSwipeDelMenu extends ViewGroup {
                     }
                     float gap = mLastP.x - ev.getRawX();
                     //为了在水平滑动中禁止父类ListView等再竖直滑动
-                    if (gap > 10 || getScrollX() > 10) {//2016 09 29 修改此处，使屏蔽父布局滑动更加灵敏，
+                    if (Math.abs(gap) > 10 || Math.abs(getScrollX()) > 10) {//2016 09 29 修改此处，使屏蔽父布局滑动更加灵敏，
                         getParent().requestDisallowInterceptTouchEvent(true);
                     }
                     //如果scroller还没有滑动结束 停止滑动动画
@@ -241,13 +252,23 @@ public class CstSwipeDelMenu extends ViewGroup {
                         mScroller.abortAnimation();
                     }*/
                     scrollBy((int) (gap), 0);//滑动使用scrollBy
-                    //修正
-                    if (getScrollX() < 0) {
-                        scrollTo(0, 0);
+                    //越界修正
+                    if (isLeftSwipe) {//左滑
+                        if (getScrollX() < 0) {
+                            scrollTo(0, 0);
+                        }
+                        if (getScrollX() > mRightMenuWidths) {
+                            scrollTo(mRightMenuWidths, 0);
+                        }
+                    } else {//右滑
+                        if (getScrollX() < -mRightMenuWidths) {
+                            scrollTo(-mRightMenuWidths, 0);
+                        }
+                        if (getScrollX() > 0) {
+                            scrollTo(0, 0);
+                        }
                     }
-                    if (getScrollX() > mRightMenuWidths) {
-                        scrollTo(mRightMenuWidths, 0);
-                    }
+
                     mLastP.set(ev.getRawX(), ev.getRawY());
                     break;
                 case MotionEvent.ACTION_UP:
@@ -259,23 +280,47 @@ public class CstSwipeDelMenu extends ViewGroup {
                         final float velocityX = verTracker.getXVelocity(mPointerId);
                         if (Math.abs(velocityX) > 1000) {//滑动速度超过阈值
                             if (velocityX < -1000) {
-                                //平滑展开Menu
-                                smoothExpand();
-                                //展开就加入ViewCache：
-                                mViewCache = this;
+                                if (isLeftSwipe) {//左滑
+                                    //平滑展开Menu
+                                    smoothExpand();
+                                    //展开就加入ViewCache：
+                                    mViewCache = this;
+                                } else {
+                                    //平滑关闭Menu
+                                    smoothClose();
+                                }
                             } else {
-                                //平滑关闭Menu
-                                smoothClose();
+                                if (isLeftSwipe) {//左滑
+                                    // 平滑关闭Menu
+                                    smoothClose();
+                                } else {
+                                    //平滑展开Menu
+                                    smoothExpand();
+                                    //展开就加入ViewCache：
+                                    mViewCache = this;
+                                }
                             }
                         } else {
                             if (getScrollX() > mLimit) {//否则就判断滑动距离
-                                //平滑展开Menu
-                                smoothExpand();
-                                //展开就加入ViewCache：
-                                mViewCache = this;
+                                if (isLeftSwipe) {//左滑
+                                    //平滑展开Menu
+                                    smoothExpand();
+                                    //展开就加入ViewCache：
+                                    mViewCache = this;
+                                } else {
+                                    //平滑关闭Menu
+                                    smoothClose();
+                                }
                             } else {
-                                //平滑关闭Menu
-                                smoothClose();
+                                if (isLeftSwipe) {//左滑
+                                    // 平滑关闭Menu
+                                    smoothClose();
+                                } else {
+                                    //平滑展开Menu
+                                    smoothExpand();
+                                    //展开就加入ViewCache：
+                                    mViewCache = this;
+                                }
                             }
                         }
                     }
@@ -296,13 +341,22 @@ public class CstSwipeDelMenu extends ViewGroup {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_UP:
                 //为了在侧滑时，屏蔽子View的点击事件
-                if (getScrollX() > mScaleTouchSlop) {
-                    //add by 2016 09 10 解决一个智障问题~ 居然不给点击侧滑菜单 我跪着谢罪
-                    //这里判断落点在内容区域屏蔽点击，内容区域外，允许传递事件继续向下的的。。。
-                    if (ev.getX() < getWidth() - getScrollX()) {
-                        return true;//true表示拦截
+                if (isLeftSwipe) {
+                    if (getScrollX() > mScaleTouchSlop) {
+                        //add by 2016 09 10 解决一个智障问题~ 居然不给点击侧滑菜单 我跪着谢罪
+                        //这里判断落点在内容区域屏蔽点击，内容区域外，允许传递事件继续向下的的。。。
+                        if (ev.getX() < getWidth() - getScrollX()) {
+                            return true;//true表示拦截
+                        }
+                    }
+                } else {
+                    if (-getScrollX() > mScaleTouchSlop) {
+                        if (ev.getX() > 0 && ev.getX() < mRightMenuWidths) {
+                            return true;
+                        }
                     }
                 }
+
                 break;
         }
         //模仿IOS 点击其他区域关闭：
@@ -322,7 +376,7 @@ public class CstSwipeDelMenu extends ViewGroup {
     public void smoothExpand() {
         /*mScroller.startScroll(getScrollX(), 0, mRightMenuWidths - getScrollX(), 0);
         invalidate();*/
-        mExpandAnim = ValueAnimator.ofInt(getScrollX(), mRightMenuWidths);
+        mExpandAnim = ValueAnimator.ofInt(getScrollX(), isLeftSwipe ? mRightMenuWidths : -mRightMenuWidths);
         mExpandAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -393,7 +447,7 @@ public class CstSwipeDelMenu extends ViewGroup {
     //展开时，禁止长按
     @Override
     public boolean performLongClick() {
-        if (getScrollX() > mScaleTouchSlop) {
+        if (Math.abs(getScrollX()) > mScaleTouchSlop) {
             return false;
         }
         return super.performLongClick();

@@ -30,7 +30,7 @@
         android:text="删除"/>
 
 
-    <RelativeLayout
+<!--    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@color/red_ff4a57"
@@ -46,6 +46,6 @@
             android:gravity="center"
             android:text="删除"
             android:textColor="@android:color/white"/>
-    </RelativeLayout>
+    </RelativeLayout>-->
 
 </mcxtzhang.swipedelmenu.view.CstSwipeDelMenu>
