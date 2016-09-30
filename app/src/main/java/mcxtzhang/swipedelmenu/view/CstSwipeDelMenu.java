@@ -65,14 +65,6 @@ public class CstSwipeDelMenu extends ViewGroup {
 
     private boolean isIos = true;//IOS类型的开关
 
-    public boolean isIos() {
-        return isIos;
-    }
-
-    public void setIos(boolean ios) {
-        isIos = ios;
-    }
-
     private boolean iosInterceptFlag = false;//IOS类型下，是否拦截事件的flag
 
     //20160929add 左滑右滑的开关
@@ -102,6 +94,34 @@ public class CstSwipeDelMenu extends ViewGroup {
      */
     public void setSwipeEnable(boolean swipeEnable) {
         isSwipeEnable = swipeEnable;
+    }
+
+
+    public boolean isIos() {
+        return isIos;
+    }
+
+    /**
+     * 设置是否开启IOS阻塞式交互
+     * @param ios
+     */
+    public CstSwipeDelMenu setIos(boolean ios) {
+        isIos = ios;
+        return this;
+    }
+
+    public boolean isLeftSwipe() {
+        return isLeftSwipe;
+    }
+
+    /**
+     * 设置是否开启左滑出菜单，设置false 为右滑出菜单
+     * @param leftSwipe
+     * @return
+     */
+    public CstSwipeDelMenu setLeftSwipe(boolean leftSwipe) {
+        isLeftSwipe = leftSwipe;
+        return this;
     }
 
     private void init(Context context) {

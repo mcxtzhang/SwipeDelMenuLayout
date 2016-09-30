@@ -14,6 +14,7 @@ import java.util.List;
 
 import mcxtzhang.listswipemenudemo.R;
 import mcxtzhang.swipedelmenu.SwipeBean;
+import mcxtzhang.swipedelmenu.view.CstSwipeDelMenu;
 
 /**
  * 介绍：
@@ -40,8 +41,8 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
 
     @Override
     public void onBindViewHolder(final FullDelDemoVH holder, final int position) {
-        //((CstSwipeDelMenu)holder.itemView).setIos(false);//这句话关掉IOS阻塞式交互效果
-        holder.content.setText(mDatas.get(position).name);
+        ((CstSwipeDelMenu) holder.itemView).setIos(false).setLeftSwipe(position % 2 == 0 ? true : false);//这句话关掉IOS阻塞式交互效果
+        holder.content.setText(mDatas.get(position).name + (position % 2 == 0 ? "我右白虎" : "我左青龙"));
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +58,7 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
         (holder.content).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, ""+mDatas.get(position).name, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "" + mDatas.get(position).name, Toast.LENGTH_SHORT).show();
                 Log.d("TAG", "onClick() called with: v = [" + v + "]");
             }
         });
