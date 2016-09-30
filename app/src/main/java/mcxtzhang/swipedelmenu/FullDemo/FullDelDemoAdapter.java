@@ -62,8 +62,18 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
         (holder.content).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "" + mDatas.get(position).name, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "" + mDatas.get(holder.getAdapterPosition()).name, Toast.LENGTH_SHORT).show();
                 Log.d("TAG", "onClick() called with: v = [" + v + "]");
+            }
+        });
+        //置顶：
+        holder.btnTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SwipeBean swipeBean = mDatas.get(holder.getAdapterPosition());
+                mDatas.remove(swipeBean);
+                mDatas.add(0, swipeBean);
+                notifyItemRangeChanged(0,holder.getAdapterPosition()+1);
             }
         });
     }
@@ -94,12 +104,14 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
         TextView content;
         Button btnDelete;
         Button btnUnRead;
+        Button btnTop;
 
         public FullDelDemoVH(View itemView) {
             super(itemView);
             content = (TextView) itemView.findViewById(R.id.content);
             btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
             btnUnRead = (Button) itemView.findViewById(R.id.btnUnRead);
+            btnTop = (Button) itemView.findViewById(R.id.btnTop);
         }
     }
 }
