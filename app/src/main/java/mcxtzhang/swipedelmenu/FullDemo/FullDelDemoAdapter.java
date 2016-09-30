@@ -50,11 +50,11 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mOnDelListener) {
+                if (null != mOnSwipeListener) {
                     //如果删除时，不使用mAdapter.notifyItemRemoved(pos)，则删除没有动画效果，
                     //且如果想让侧滑菜单同时关闭，需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
                     //((CstSwipeDelMenu) holder.itemView).quickClose();
-                    mOnDelListener.onDel(holder.getAdapterPosition());
+                    mOnSwipeListener.onDel(holder.getAdapterPosition());
                 }
             }
         });
@@ -70,10 +70,10 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
         holder.btnTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SwipeBean swipeBean = mDatas.get(holder.getAdapterPosition());
-                mDatas.remove(swipeBean);
-                mDatas.add(0, swipeBean);
-                notifyItemRangeChanged(0,holder.getAdapterPosition()+1);
+                if (null!=mOnSwipeListener){
+                    mOnSwipeListener.onTop(holder.getAdapterPosition());
+                }
+
             }
         });
     }
@@ -86,18 +86,20 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
     /**
      * 和Activity通信的接口
      */
-    public interface onDelListener {
+    public interface onSwipeListener {
         void onDel(int pos);
+
+        void onTop(int pos);
     }
 
-    private onDelListener mOnDelListener;
+    private onSwipeListener mOnSwipeListener;
 
-    public onDelListener getOnDelListener() {
-        return mOnDelListener;
+    public onSwipeListener getOnDelListener() {
+        return mOnSwipeListener;
     }
 
-    public void setOnDelListener(onDelListener mOnDelListener) {
-        this.mOnDelListener = mOnDelListener;
+    public void setOnDelListener(onSwipeListener mOnDelListener) {
+        this.mOnSwipeListener = mOnDelListener;
     }
 
     class FullDelDemoVH extends RecyclerView.ViewHolder {
