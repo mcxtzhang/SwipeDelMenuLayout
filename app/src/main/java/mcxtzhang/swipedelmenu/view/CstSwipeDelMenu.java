@@ -75,7 +75,7 @@ public class CstSwipeDelMenu extends ViewGroup {
 
     private boolean iosInterceptFlag = false;//IOS类型下，是否拦截事件的flag
 
-    //20160929add 左滑右滑
+    //20160929add 左滑右滑的开关
     private boolean isLeftSwipe = false;
 
     public CstSwipeDelMenu(Context context) {
@@ -339,7 +339,7 @@ public class CstSwipeDelMenu extends ViewGroup {
                     }
                 } else {
                     if (-getScrollX() > mScaleTouchSlop) {
-                        if (ev.getX() > mRightMenuWidths) {//点击范围在菜单外 屏蔽
+                        if (ev.getX() > -getScrollX()) {//点击范围在菜单外 屏蔽
                             return true;
                         }
                     }
