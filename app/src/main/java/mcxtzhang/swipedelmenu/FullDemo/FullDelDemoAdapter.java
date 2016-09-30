@@ -41,8 +41,12 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
 
     @Override
     public void onBindViewHolder(final FullDelDemoVH holder, final int position) {
-        ((CstSwipeDelMenu) holder.itemView).setIos(false).setLeftSwipe(position % 2 == 0 ? true : false);//这句话关掉IOS阻塞式交互效果
+        ((CstSwipeDelMenu) holder.itemView).setIos(false).setLeftSwipe(position % 2 == 0 ? true : false);//这句话关掉IOS阻塞式交互效果 并依次打开左滑右滑
+
         holder.content.setText(mDatas.get(position).name + (position % 2 == 0 ? "我右白虎" : "我左青龙"));
+
+        holder.btnUnRead.setVisibility(position % 3 == 0 ? View.GONE : View.VISIBLE);
+
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,11 +93,13 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
     class FullDelDemoVH extends RecyclerView.ViewHolder {
         TextView content;
         Button btnDelete;
+        Button btnUnRead;
 
         public FullDelDemoVH(View itemView) {
             super(itemView);
             content = (TextView) itemView.findViewById(R.id.content);
             btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
+            btnUnRead = (Button) itemView.findViewById(R.id.btnUnRead);
         }
     }
 }

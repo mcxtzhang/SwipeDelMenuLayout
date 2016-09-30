@@ -10,42 +10,52 @@
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@drawable/item_bg"
+        android:background="?android:attr/selectableItemBackground"
         android:gravity="center"
         android:text="试试看"/>
 
     <Button
-        android:id="@+id/update"
+        android:id="@+id/btnTop"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="#d9dee4"
+        android:text="置顶"
+        android:textColor="@android:color/white"/>
+
+    <Button
+        android:id="@+id/btnUnRead"
         android:layout_width="120dp"
         android:layout_height="match_parent"
+        android:background="#ecd50a"
         android:clickable="true"
-        android:background="#c3c1c1"
-        android:text="标记未读"/>
+        android:text="标记未读"
+        android:textColor="@android:color/white"/>
 
     <Button
         android:id="@+id/btnDelete"
         android:layout_width="60dp"
         android:layout_height="match_parent"
         android:background="@color/red_ff4a57"
-        android:text="删除"/>
+        android:text="删除"
+        android:textColor="@android:color/white"/>
 
 
-<!--    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@color/red_ff4a57"
-        android:clickable="true">
+    <!--    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/red_ff4a57"
+            android:clickable="true">
 
-        <TextView
-            android:id="@+id/tv_delete"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:drawablePadding="5dp"
-            android:drawableTop="@drawable/point_icon_delete"
-            android:gravity="center"
-            android:text="删除"
-            android:textColor="@android:color/white"/>
-    </RelativeLayout>-->
+            <TextView
+                android:id="@+id/tv_delete"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:drawablePadding="5dp"
+                android:drawableTop="@drawable/point_icon_delete"
+                android:gravity="center"
+                android:text="删除"
+                android:textColor="@android:color/white"/>
+        </RelativeLayout>-->
 
 </mcxtzhang.swipedelmenu.view.CstSwipeDelMenu>
