@@ -9,17 +9,6 @@ http://blog.csdn.net/zxt0601/article/details/52303781
 
 http://blog.csdn.net/zxt0601
 
-我的稀土掘金：
-
-http://gold.xitu.io/user/56de210b816dfa0052e66495
-
-我的简书：
-
-http://www.jianshu.com/users/8e91ff99b072/timeline
-
-我的github：
-
-https://github.com/mcxtzhang
 ***
 
 ###更新点###
@@ -34,6 +23,10 @@ https://github.com/mcxtzhang
 
 1 增加一个item点击事件设置的示例。
 
+2016 09 30 更新：
+1 支持多向滑动：
+
+![image](http://note.youdao.com/yws/public/resource/bbc69c1e055cb335d01c772e1dadb0c1/xmlnote/DF6F2C6508C246C0931807FC3132577E/10265)
 ***
 【1 序言】
 侧滑删除的轮子网上有很多，最初在github上看过一个，还是ListView时代，那是一个自定义ListView 实现侧滑删除的，当初就觉得这种做法不是最佳，万一我项目里又同时有自定义ListView的需求，会增加复杂度。
@@ -81,6 +74,7 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
 
 7 侧滑时，拦截了点击事件
 
+8 通过开关 isLeftSwipe支持左滑右滑
 【3 使用预览】
 
 需要效果一 ：//((CstSwipeDelMenu)holder.getConvertView()).setIos(false);//这句话关掉IOS阻塞式交互效果
