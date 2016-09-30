@@ -301,26 +301,14 @@ public class CstSwipeDelMenu extends ViewGroup {
                                 }
                             }
                         } else {
-                            if (getScrollX() > mLimit) {//否则就判断滑动距离
-                                if (isLeftSwipe) {//左滑
-                                    //平滑展开Menu
-                                    smoothExpand();
-                                    //展开就加入ViewCache：
-                                    mViewCache = this;
-                                } else {
-                                    //平滑关闭Menu
-                                    smoothClose();
-                                }
+                            if (Math.abs(getScrollX()) > mLimit) {//否则就判断滑动距离
+                                //平滑展开Menu
+                                smoothExpand();
+                                //展开就加入ViewCache：
+                                mViewCache = this;
                             } else {
-                                if (isLeftSwipe) {//左滑
-                                    // 平滑关闭Menu
-                                    smoothClose();
-                                } else {
-                                    //平滑展开Menu
-                                    smoothExpand();
-                                    //展开就加入ViewCache：
-                                    mViewCache = this;
-                                }
+                                // 平滑关闭Menu
+                                smoothClose();
                             }
                         }
                     }
@@ -351,7 +339,7 @@ public class CstSwipeDelMenu extends ViewGroup {
                     }
                 } else {
                     if (-getScrollX() > mScaleTouchSlop) {
-                        if (ev.getX() > 0 && ev.getX() < mRightMenuWidths) {
+                        if (ev.getX() > mRightMenuWidths) {//点击范围在菜单外 屏蔽
                             return true;
                         }
                     }
