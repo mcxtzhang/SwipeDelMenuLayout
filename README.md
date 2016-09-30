@@ -25,8 +25,9 @@ http://blog.csdn.net/zxt0601
 
 2016 09 30 更新：
 1 支持多向滑动：
+![image](http://img.blog.csdn.net/20160930150634050?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
 
-![image](http://note.youdao.com/yws/public/resource/bbc69c1e055cb335d01c772e1dadb0c1/xmlnote/DF6F2C6508C246C0931807FC3132577E/10265)
+
 ***
 【1 序言】
 侧滑删除的轮子网上有很多，最初在github上看过一个，还是ListView时代，那是一个自定义ListView 实现侧滑删除的，当初就觉得这种做法不是最佳，万一我项目里又同时有自定义ListView的需求，会增加复杂度。
