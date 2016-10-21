@@ -12,20 +12,22 @@ http://blog.csdn.net/zxt0601
 ***
 
 ###更新点###
-
-2016 09 12 更新点
-
-1 增加用RecyclerView、ListView实现的完整删除Demo 供不会用的同学参考。
-
-2 增加一个quickClose()方法，更好的在ListView中使用，不过还是推荐大家用RecyclerView。
-
-2016 09 28 更新点：
-
-1 增加一个item点击事件设置的示例。
+2016 10 21 更新：
+1 增加viewChache 的 get()方法，可以用在：当点击外部空白处时，关闭正在展开的侧滑菜单。
 
 2016 09 30 更新：
 1 支持多向滑动：
-![image](http://note.youdao.com/yws/public/resource/bbc69c1e055cb335d01c772e1dadb0c1/xmlnote/DF6F2C6508C246C0931807FC3132577E/10265)
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/doubleSwipe.gif)
+
+2016 09 28 更新点：
+1 增加一个item点击事件设置的示例。
+
+2016 09 12 更新点：
+1 增加用RecyclerView、ListView实现的完整删除Demo 供不会用的同学参考。
+2 增加一个quickClose()方法，更好的在ListView中使用，不过还是推荐大家用RecyclerView。
+
+
+
 
 
 ***
