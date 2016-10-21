@@ -30,6 +30,7 @@ import android.view.animation.OvershootInterpolator;
  * 3 通过 isIos 变量控制是否是IOS阻塞式交互，默认是打开的。
  * 4 通过 isSwipeEnable 变量控制是否开启右滑菜单，默认打开。（某些场景，复用item，没有编辑权限的用户不能右滑）
  * 5 2016 09 29 add,，通过开关 isLeftSwipe支持左滑右滑
+ * 6 2016 10 21 add , 增加viewChache 的 get()方法，可以用在：当点击外部空白处时，关闭正在展开的侧滑菜单。
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -103,6 +104,7 @@ public class CstSwipeDelMenu extends ViewGroup {
 
     /**
      * 设置是否开启IOS阻塞式交互
+     *
      * @param ios
      */
     public CstSwipeDelMenu setIos(boolean ios) {
@@ -116,12 +118,22 @@ public class CstSwipeDelMenu extends ViewGroup {
 
     /**
      * 设置是否开启左滑出菜单，设置false 为右滑出菜单
+     *
      * @param leftSwipe
      * @return
      */
     public CstSwipeDelMenu setLeftSwipe(boolean leftSwipe) {
         isLeftSwipe = leftSwipe;
         return this;
+    }
+
+    /**
+     * 返回ViewCache
+     *
+     * @return
+     */
+    public static CstSwipeDelMenu getViewCache() {
+        return mViewCache;
     }
 
     private void init(Context context) {

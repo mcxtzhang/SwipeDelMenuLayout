@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.List;
 
 import mcxtzhang.listswipemenudemo.R;
 import mcxtzhang.swipedelmenu.SwipeBean;
+import mcxtzhang.swipedelmenu.view.CstSwipeDelMenu;
 
 /**
  * 介绍：完整的删除Demo
@@ -60,6 +63,21 @@ public class FullDelDemoActivity extends Activity {
         });
         mRv.setAdapter(mAdapter);
         mRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(this));
+
+        //6 2016 10 21 add , 增加viewChache 的 get()方法，
+        // 可以用在：当点击外部空白处时，关闭正在展开的侧滑菜单。我个人觉得意义不大，
+        mRv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    CstSwipeDelMenu viewCache = CstSwipeDelMenu.getViewCache();
+                    if (null != viewCache) {
+                        viewCache.smoothClose();
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private void initDatas() {
