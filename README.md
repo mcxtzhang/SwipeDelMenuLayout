@@ -13,6 +13,10 @@ http://blog.csdn.net/zxt0601
 
 ###更新点###
 2016 10 21 更新：
+1 当父控件宽度不是全屏时的bug。
+2 仿QQ，侧滑菜单展开时，点击除侧滑菜单之外的所有区域包括菜单的内容部分，关闭侧滑菜单。
+
+2016 10 21 更新：
 1 增加viewChache 的 get()方法，可以用在：当点击外部空白处时，关闭正在展开的侧滑菜单。
 
 2016 09 30 更新：
@@ -168,4 +172,3 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
 在RecyclerView中，如果删除时，建议使用mAdapter.notifyItemRemoved(pos)，
 
 否则删除没有动画效果， 且如果想让侧滑菜单同时关闭，也需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
-
