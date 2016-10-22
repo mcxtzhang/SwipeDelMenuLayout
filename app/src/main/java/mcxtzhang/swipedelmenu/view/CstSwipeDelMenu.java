@@ -9,6 +9,7 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
@@ -31,6 +32,7 @@ import android.view.animation.OvershootInterpolator;
  * 4 通过 isSwipeEnable 变量控制是否开启右滑菜单，默认打开。（某些场景，复用item，没有编辑权限的用户不能右滑）
  * 5 2016 09 29 add,，通过开关 isLeftSwipe支持左滑右滑
  * 6 2016 10 21 add , 增加viewChache 的 get()方法，可以用在：当点击外部空白处时，关闭正在展开的侧滑菜单。
+ * 7 2016 10 22 fix , 当父控件宽度不是全屏时的bug。
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -42,7 +44,7 @@ public class CstSwipeDelMenu extends ViewGroup {
     private int mMaxVelocity;//计算滑动速度用
     private int mPointerId;//多点触摸只算第一根手指的速度
     private int mHeight;//自己的高度
-    private int mScreenW;//屏幕宽宽
+    private int mMaxWidth;//父控件留给自己的最大的水平空间
     /**
      * 右侧菜单宽度总和(最大滑动距离)
      */
@@ -138,7 +140,6 @@ public class CstSwipeDelMenu extends ViewGroup {
 
     private void init(Context context) {
         mScaleTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-        mScreenW = getResources().getDisplayMetrics().widthPixels;
         mMaxVelocity = ViewConfiguration.get(context).getScaledMaximumFlingVelocity();
         //初始化滑动帮助类对象
         //mScroller = new Scroller(context);
@@ -148,6 +149,15 @@ public class CstSwipeDelMenu extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //Log.d(TAG, "onMeasure() called with: " + "widthMeasureSpec = [" + widthMeasureSpec + "], heightMeasureSpec = [" + heightMeasureSpec + "]");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        //add by zhangxutong 2016 10 22 for 最大宽度根据父控件计算出，如果没有父控件用屏幕宽度
+        ViewParent parent = getParent();
+        if (parent != null && parent instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) parent;
+            mMaxWidth = viewGroup.getMeasuredWidth() - viewGroup.getPaddingLeft() - viewGroup.getPaddingRight();
+        } else {
+            mMaxWidth = getResources().getDisplayMetrics().widthPixels;
+        }
+
         mRightMenuWidths = 0;//由于ViewHolder的复用机制，每次这里要手动恢复初始值
         int childCount = getChildCount();
 
@@ -170,7 +180,7 @@ public class CstSwipeDelMenu extends ViewGroup {
                 }
             }
         }
-        setMeasuredDimension(mScreenW, mHeight);//宽度取屏幕宽度
+        setMeasuredDimension(mMaxWidth, mHeight);//宽度取最大宽度
         mLimit = mRightMenuWidths * 4 / 10;//滑动判断的临界值
         //Log.d(TAG, "onMeasure() called with: " + "mRightMenuWidths = [" + mRightMenuWidths);
         if (isNeedMeasureChildHeight) {//如果子View的height有MatchParent属性的，设置子View高度
@@ -215,16 +225,16 @@ public class CstSwipeDelMenu extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        //LogUtils.d(TAG, "onLayout() called with: " + "changed = [" + changed + "], l = [" + l + "], t = [" + t + "], r = [" + r + "], b = [" + b + "]");
+        //LogUtils.e(TAG, "onLayout() called with: " + "changed = [" + changed + "], l = [" + l + "], t = [" + t + "], r = [" + r + "], b = [" + b + "]");
         int childCount = getChildCount();
-        int left = l;
+        int left = 0 + getPaddingLeft();
         int right = 0;
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
             if (childView.getVisibility() != GONE) {
                 if (i == 0) {//第一个子View是内容 宽度设置为全屏
-                    childView.layout(left, getPaddingTop(), left + mScreenW, getPaddingTop() + childView.getMeasuredHeight());
-                    left = left + mScreenW;
+                    childView.layout(left, getPaddingTop(), left + mMaxWidth, getPaddingTop() + childView.getMeasuredHeight());
+                    left = left + mMaxWidth;
                 } else {
                     if (isLeftSwipe) {
                         childView.layout(left, getPaddingTop(), left + childView.getMeasuredWidth(), getPaddingTop() + childView.getMeasuredHeight());
