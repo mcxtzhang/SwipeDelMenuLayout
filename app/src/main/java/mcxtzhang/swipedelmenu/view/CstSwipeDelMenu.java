@@ -33,6 +33,7 @@ import android.view.animation.OvershootInterpolator;
  * 5 2016 09 29 add,，通过开关 isLeftSwipe支持左滑右滑
  * 6 2016 10 21 add , 增加viewChache 的 get()方法，可以用在：当点击外部空白处时，关闭正在展开的侧滑菜单。
  * 7 2016 10 22 fix , 当父控件宽度不是全屏时的bug。
+ * 2016 10 22 add , 仿QQ，侧滑菜单展开时，点击除侧滑菜单之外的区域，关闭侧滑菜单。
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -56,6 +57,10 @@ public class CstSwipeDelMenu extends ViewGroup {
     //private Scroller mScroller;//以前item的滑动动画靠它做，现在用属性动画做
     //上一次的xy
     private PointF mLastP = new PointF();
+    //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击除侧滑菜单之外的区域，关闭侧滑菜单。
+    //增加一个布尔值变量，dispatch函数里，每次down时，为true，move时判断，如果是滑动动作，设为false。
+    //在Intercept函数的up时，判断这个变量，如果仍为true 说明是点击事件，则关闭菜单。 
+    private boolean isUnMoved = true;
 
     //存储的是当前正在展开的View
     private static CstSwipeDelMenu mViewCache;
@@ -258,6 +263,7 @@ public class CstSwipeDelMenu extends ViewGroup {
             final VelocityTracker verTracker = mVelocityTracker;
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    isUnMoved = true;//2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
                     iosInterceptFlag = false;//add by 2016 09 11 ，每次DOWN时，默认是不拦截的
                     if (isTouching) {//如果有别的指头摸过了，那么就return false。这样后续的move..等事件也不会再来找这个View了。
                         return false;
@@ -289,6 +295,11 @@ public class CstSwipeDelMenu extends ViewGroup {
                     if (Math.abs(gap) > 10 || Math.abs(getScrollX()) > 10) {//2016 09 29 修改此处，使屏蔽父布局滑动更加灵敏，
                         getParent().requestDisallowInterceptTouchEvent(true);
                     }
+                    //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。begin
+                    if (Math.abs(gap) > mScaleTouchSlop) {
+                        isUnMoved = false;
+                    }
+                    //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。end
                     //如果scroller还没有滑动结束 停止滑动动画
 /*                    if (!mScroller.isFinished()) {
                         mScroller.abortAnimation();
@@ -376,12 +387,20 @@ public class CstSwipeDelMenu extends ViewGroup {
                         //add by 2016 09 10 解决一个智障问题~ 居然不给点击侧滑菜单 我跪着谢罪
                         //这里判断落点在内容区域屏蔽点击，内容区域外，允许传递事件继续向下的的。。。
                         if (ev.getX() < getWidth() - getScrollX()) {
+                            //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
+                            if (isUnMoved) {
+                                smoothClose();
+                            }
                             return true;//true表示拦截
                         }
                     }
                 } else {
                     if (-getScrollX() > mScaleTouchSlop) {
                         if (ev.getX() > -getScrollX()) {//点击范围在菜单外 屏蔽
+                            //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
+                            if (isUnMoved) {
+                                smoothClose();
+                            }
                             return true;
                         }
                     }
