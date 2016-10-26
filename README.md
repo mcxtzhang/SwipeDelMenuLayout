@@ -10,8 +10,15 @@ http://blog.csdn.net/zxt0601/article/details/52303781
 http://blog.csdn.net/zxt0601
 
 ***
+# 重要的话 开头说，not for the RecyclerView or ListView, fot the Any ViewGroup.
+本控件不依赖任何父布局，不是针对 RecyclerView、ListView，而是任意的ViewGroup里的childView都可以使用侧滑(删除)菜单。
+
 
 ###更新点###
+2016 10 21 更新：
+1 当父控件宽度不是全屏时的bug。
+2 仿QQ，侧滑菜单展开时，点击除侧滑菜单之外的所有区域包括菜单的内容部分，关闭侧滑菜单。
+
 2016 10 21 更新：
 1 增加viewChache 的 get()方法，可以用在：当点击外部空白处时，关闭正在展开的侧滑菜单。
 
@@ -168,4 +175,3 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
 在RecyclerView中，如果删除时，建议使用mAdapter.notifyItemRemoved(pos)，
 
 否则删除没有动画效果， 且如果想让侧滑菜单同时关闭，也需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
-

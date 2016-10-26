@@ -9,6 +9,7 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
@@ -31,6 +32,8 @@ import android.view.animation.OvershootInterpolator;
  * 4 通过 isSwipeEnable 变量控制是否开启右滑菜单，默认打开。（某些场景，复用item，没有编辑权限的用户不能右滑）
  * 5 2016 09 29 add,，通过开关 isLeftSwipe支持左滑右滑
  * 6 2016 10 21 add , 增加viewChache 的 get()方法，可以用在：当点击外部空白处时，关闭正在展开的侧滑菜单。
+ * 7 2016 10 22 fix , 当父控件宽度不是全屏时的bug。
+ * 2016 10 22 add , 仿QQ，侧滑菜单展开时，点击除侧滑菜单之外的区域，关闭侧滑菜单。
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -42,7 +45,7 @@ public class CstSwipeDelMenu extends ViewGroup {
     private int mMaxVelocity;//计算滑动速度用
     private int mPointerId;//多点触摸只算第一根手指的速度
     private int mHeight;//自己的高度
-    private int mScreenW;//屏幕宽宽
+    private int mMaxWidth;//父控件留给自己的最大的水平空间
     /**
      * 右侧菜单宽度总和(最大滑动距离)
      */
@@ -54,6 +57,10 @@ public class CstSwipeDelMenu extends ViewGroup {
     //private Scroller mScroller;//以前item的滑动动画靠它做，现在用属性动画做
     //上一次的xy
     private PointF mLastP = new PointF();
+    //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击除侧滑菜单之外的区域，关闭侧滑菜单。
+    //增加一个布尔值变量，dispatch函数里，每次down时，为true，move时判断，如果是滑动动作，设为false。
+    //在Intercept函数的up时，判断这个变量，如果仍为true 说明是点击事件，则关闭菜单。 
+    private boolean isUnMoved = true;
 
     //存储的是当前正在展开的View
     private static CstSwipeDelMenu mViewCache;
@@ -138,7 +145,6 @@ public class CstSwipeDelMenu extends ViewGroup {
 
     private void init(Context context) {
         mScaleTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-        mScreenW = getResources().getDisplayMetrics().widthPixels;
         mMaxVelocity = ViewConfiguration.get(context).getScaledMaximumFlingVelocity();
         //初始化滑动帮助类对象
         //mScroller = new Scroller(context);
@@ -148,6 +154,15 @@ public class CstSwipeDelMenu extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //Log.d(TAG, "onMeasure() called with: " + "widthMeasureSpec = [" + widthMeasureSpec + "], heightMeasureSpec = [" + heightMeasureSpec + "]");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        //add by zhangxutong 2016 10 22 for 最大宽度根据父控件计算出，如果没有父控件用屏幕宽度
+        ViewParent parent = getParent();
+        if (parent != null && parent instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) parent;
+            mMaxWidth = viewGroup.getMeasuredWidth() - viewGroup.getPaddingLeft() - viewGroup.getPaddingRight();
+        } else {
+            mMaxWidth = getResources().getDisplayMetrics().widthPixels;
+        }
+
         mRightMenuWidths = 0;//由于ViewHolder的复用机制，每次这里要手动恢复初始值
         int childCount = getChildCount();
 
@@ -170,7 +185,7 @@ public class CstSwipeDelMenu extends ViewGroup {
                 }
             }
         }
-        setMeasuredDimension(mScreenW, mHeight);//宽度取屏幕宽度
+        setMeasuredDimension(mMaxWidth, mHeight);//宽度取最大宽度
         mLimit = mRightMenuWidths * 4 / 10;//滑动判断的临界值
         //Log.d(TAG, "onMeasure() called with: " + "mRightMenuWidths = [" + mRightMenuWidths);
         if (isNeedMeasureChildHeight) {//如果子View的height有MatchParent属性的，设置子View高度
@@ -215,16 +230,16 @@ public class CstSwipeDelMenu extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        //LogUtils.d(TAG, "onLayout() called with: " + "changed = [" + changed + "], l = [" + l + "], t = [" + t + "], r = [" + r + "], b = [" + b + "]");
+        //LogUtils.e(TAG, "onLayout() called with: " + "changed = [" + changed + "], l = [" + l + "], t = [" + t + "], r = [" + r + "], b = [" + b + "]");
         int childCount = getChildCount();
-        int left = l;
+        int left = 0 + getPaddingLeft();
         int right = 0;
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
             if (childView.getVisibility() != GONE) {
                 if (i == 0) {//第一个子View是内容 宽度设置为全屏
-                    childView.layout(left, getPaddingTop(), left + mScreenW, getPaddingTop() + childView.getMeasuredHeight());
-                    left = left + mScreenW;
+                    childView.layout(left, getPaddingTop(), left + mMaxWidth, getPaddingTop() + childView.getMeasuredHeight());
+                    left = left + mMaxWidth;
                 } else {
                     if (isLeftSwipe) {
                         childView.layout(left, getPaddingTop(), left + childView.getMeasuredWidth(), getPaddingTop() + childView.getMeasuredHeight());
@@ -248,6 +263,7 @@ public class CstSwipeDelMenu extends ViewGroup {
             final VelocityTracker verTracker = mVelocityTracker;
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    isUnMoved = true;//2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
                     iosInterceptFlag = false;//add by 2016 09 11 ，每次DOWN时，默认是不拦截的
                     if (isTouching) {//如果有别的指头摸过了，那么就return false。这样后续的move..等事件也不会再来找这个View了。
                         return false;
@@ -279,6 +295,11 @@ public class CstSwipeDelMenu extends ViewGroup {
                     if (Math.abs(gap) > 10 || Math.abs(getScrollX()) > 10) {//2016 09 29 修改此处，使屏蔽父布局滑动更加灵敏，
                         getParent().requestDisallowInterceptTouchEvent(true);
                     }
+                    //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。begin
+                    if (Math.abs(gap) > mScaleTouchSlop) {
+                        isUnMoved = false;
+                    }
+                    //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。end
                     //如果scroller还没有滑动结束 停止滑动动画
 /*                    if (!mScroller.isFinished()) {
                         mScroller.abortAnimation();
@@ -366,12 +387,20 @@ public class CstSwipeDelMenu extends ViewGroup {
                         //add by 2016 09 10 解决一个智障问题~ 居然不给点击侧滑菜单 我跪着谢罪
                         //这里判断落点在内容区域屏蔽点击，内容区域外，允许传递事件继续向下的的。。。
                         if (ev.getX() < getWidth() - getScrollX()) {
+                            //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
+                            if (isUnMoved) {
+                                smoothClose();
+                            }
                             return true;//true表示拦截
                         }
                     }
                 } else {
                     if (-getScrollX() > mScaleTouchSlop) {
                         if (ev.getX() > -getScrollX()) {//点击范围在菜单外 屏蔽
+                            //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
+                            if (isUnMoved) {
+                                smoothClose();
+                            }
                             return true;
                         }
                     }
