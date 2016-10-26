@@ -9,14 +9,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="mcxtzhang.swipedelmenu.FullDemo.FullDelDemoActivity">
-
-        </activity>
-        <activity android:name="mcxtzhang.swipedelmenu.LinearLayoutDelDemoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name="mcxtzhang.swipedelmenu.LinearLayoutDelDemoActivity">
+
         </activity>
     </application>
 
