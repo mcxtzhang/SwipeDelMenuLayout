@@ -10,7 +10,7 @@ http://blog.csdn.net/zxt0601/article/details/52303781
 http://blog.csdn.net/zxt0601
 
 ***
-# 重要的话 开头说，not for the RecyclerView or ListView, fot the Any ViewGroup.
+# 重要的话 开头说，not for the RecyclerView or ListView, for the Any ViewGroup.
 本控件不依赖任何父布局，不是针对 RecyclerView、ListView，而是任意的ViewGroup里的childView都可以使用侧滑(删除)菜单。
 
 # 使用：
@@ -25,8 +25,8 @@ Step 1. 在项目根build.gradle文件中增加JitPack仓库依赖。
 ```
 Step 2. Add the dependency
 ```
-dependencies {
-		compile 'com.github.User:Repo:Tag'
+	dependencies {
+	        compile 'com.github.mcxtzhang:SwipeDelMenuLayout:v1.0.0'
 	}
 ```
 
