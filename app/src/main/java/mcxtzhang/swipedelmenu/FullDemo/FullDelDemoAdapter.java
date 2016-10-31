@@ -10,11 +10,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
+
 import java.util.List;
 
 import mcxtzhang.listswipemenudemo.R;
 import mcxtzhang.swipedelmenu.SwipeBean;
-import mcxtzhang.swipedelmenu.view.CstSwipeDelMenu;
 
 /**
  * 介绍：
@@ -41,7 +42,7 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
 
     @Override
     public void onBindViewHolder(final FullDelDemoVH holder, final int position) {
-        ((CstSwipeDelMenu) holder.itemView).setIos(false).setLeftSwipe(position % 2 == 0 ? true : false);//这句话关掉IOS阻塞式交互效果 并依次打开左滑右滑
+        ((SwipeMenuLayout) holder.itemView).setIos(false).setLeftSwipe(position % 2 == 0 ? true : false);//这句话关掉IOS阻塞式交互效果 并依次打开左滑右滑
 
         holder.content.setText(mDatas.get(position).name + (position % 2 == 0 ? "我右白虎" : "我左青龙"));
 

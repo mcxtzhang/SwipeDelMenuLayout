@@ -8,12 +8,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import mcxtzhang.listswipemenudemo.R;
 import mcxtzhang.swipedelmenu.SwipeBean;
-import mcxtzhang.swipedelmenu.view.CstSwipeDelMenu;
 
 /**
  * 介绍：完整的删除Demo
@@ -70,7 +71,7 @@ public class FullDelDemoActivity extends Activity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    CstSwipeDelMenu viewCache = CstSwipeDelMenu.getViewCache();
+                    SwipeMenuLayout viewCache = SwipeMenuLayout.getViewCache();
                     if (null != viewCache) {
                         viewCache.smoothClose();
                     }

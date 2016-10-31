@@ -6,13 +6,14 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import mcxtzhang.listswipemenudemo.R;
 import mcxtzhang.swipedelmenu.utils.CommonAdapter;
 import mcxtzhang.swipedelmenu.utils.ViewHolder;
-import mcxtzhang.swipedelmenu.view.CstSwipeDelMenu;
 
 public class ListViewDelDemoActivity extends AppCompatActivity {
     private static final String TAG = "zxt";
@@ -43,7 +44,7 @@ public class ListViewDelDemoActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         Toast.makeText(ListViewDelDemoActivity.this, "删除:" + position, Toast.LENGTH_SHORT).show();
                         //在ListView里，点击侧滑菜单上的选项时，如果想让擦花菜单同时关闭，调用这句话
-                        ((CstSwipeDelMenu) holder.getConvertView()).quickClose();
+                        ((SwipeMenuLayout) holder.getConvertView()).quickClose();
                         mDatas.remove(position);
                         notifyDataSetChanged();
                     }

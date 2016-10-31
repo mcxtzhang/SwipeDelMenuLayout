@@ -1,4 +1,4 @@
-package mcxtzhang.swipedelmenu.view;
+package com.mcxtzhang.swipemenulib;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -37,7 +37,7 @@ import android.view.animation.OvershootInterpolator;
  * Created by zhangxutong .
  * Date: 16/04/24
  */
-public class CstSwipeDelMenu extends ViewGroup {
+public class SwipeMenuLayout extends ViewGroup {
     private static final String TAG = "zxt";
     private boolean isSwipeEnable = true;//右滑删除功能的开关,默认开
 
@@ -63,7 +63,7 @@ public class CstSwipeDelMenu extends ViewGroup {
     private boolean isUnMoved = true;
 
     //存储的是当前正在展开的View
-    private static CstSwipeDelMenu mViewCache;
+    private static SwipeMenuLayout mViewCache;
 
     //防止多只手指一起滑我的flag 在每次down里判断， touch事件结束清空
     private static boolean isTouching;
@@ -78,15 +78,15 @@ public class CstSwipeDelMenu extends ViewGroup {
     //20160929add 左滑右滑的开关
     private boolean isLeftSwipe = true;
 
-    public CstSwipeDelMenu(Context context) {
+    public SwipeMenuLayout(Context context) {
         this(context, null);
     }
 
-    public CstSwipeDelMenu(Context context, AttributeSet attrs) {
+    public SwipeMenuLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CstSwipeDelMenu(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SwipeMenuLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
@@ -114,7 +114,7 @@ public class CstSwipeDelMenu extends ViewGroup {
      *
      * @param ios
      */
-    public CstSwipeDelMenu setIos(boolean ios) {
+    public SwipeMenuLayout setIos(boolean ios) {
         isIos = ios;
         return this;
     }
@@ -129,7 +129,7 @@ public class CstSwipeDelMenu extends ViewGroup {
      * @param leftSwipe
      * @return
      */
-    public CstSwipeDelMenu setLeftSwipe(boolean leftSwipe) {
+    public SwipeMenuLayout setLeftSwipe(boolean leftSwipe) {
         isLeftSwipe = leftSwipe;
         return this;
     }
@@ -139,7 +139,7 @@ public class CstSwipeDelMenu extends ViewGroup {
      *
      * @return
      */
-    public static CstSwipeDelMenu getViewCache() {
+    public static SwipeMenuLayout getViewCache() {
         return mViewCache;
     }
 
@@ -470,8 +470,8 @@ public class CstSwipeDelMenu extends ViewGroup {
     /**
      * * 释放VelocityTracker
      *
-     * @see android.view.VelocityTracker#clear()
-     * @see android.view.VelocityTracker#recycle()
+     * @see VelocityTracker#clear()
+     * @see VelocityTracker#recycle()
      */
     private void releaseVelocityTracker() {
         if (null != mVelocityTracker) {

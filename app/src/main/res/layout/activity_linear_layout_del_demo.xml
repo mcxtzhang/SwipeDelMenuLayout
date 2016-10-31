@@ -8,10 +8,10 @@
     android:orientation="vertical"
     tools:context="mcxtzhang.swipedelmenu.LinearLayoutDelDemoActivity">
 
-    <mcxtzhang.swipedelmenu.view.CstSwipeDelMenu
+    <com.mcxtzhang.swipemenulib.SwipeMenuLayout
         android:layout_width="match_parent"
-        android:clickable="true"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clickable="true">
 
         <LinearLayout
             android:id="@+id/llContent"
@@ -69,13 +69,13 @@
             android:text="删除"
             android:textColor="@android:color/white"/>
 
-    </mcxtzhang.swipedelmenu.view.CstSwipeDelMenu>
+    </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
 
 
-    <mcxtzhang.swipedelmenu.view.CstSwipeDelMenu
+    <com.mcxtzhang.swipemenulib.SwipeMenuLayout
         android:layout_width="match_parent"
-        android:clickable="true"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clickable="true">
 
         <LinearLayout
             android:id="@+id/llContent2"
@@ -133,7 +133,7 @@
             android:text="删除"
             android:textColor="@android:color/white"/>
 
-    </mcxtzhang.swipedelmenu.view.CstSwipeDelMenu>
+    </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
 
 
 </LinearLayout>
