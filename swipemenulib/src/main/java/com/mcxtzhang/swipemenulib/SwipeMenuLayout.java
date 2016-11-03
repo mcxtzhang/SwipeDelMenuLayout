@@ -36,7 +36,7 @@ import android.view.animation.OvershootInterpolator;
  * 6 2016 10 21 add , 增加viewChache 的 get()方法，可以用在：当点击外部空白处时，关闭正在展开的侧滑菜单。
  * 7 2016 10 22 fix , 当父控件宽度不是全屏时的bug。
  * 2016 10 22 add , 仿QQ，侧滑菜单展开时，点击除侧滑菜单之外的区域，关闭侧滑菜单。
- * 8 2016 11 03 add,回滑只是关闭侧滑菜单，不应该再去触发content的点击事件。
+ * 8 2016 11 03 add,判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -65,7 +65,7 @@ public class SwipeMenuLayout extends ViewGroup {
     //在Intercept函数的up时，判断这个变量，如果仍为true 说明是点击事件，则关闭菜单。 
     private boolean isUnMoved = true;
 
-    //2016 11 03 add,回滑只是关闭侧滑菜单，不应该再去触发content的点击事件。
+    //2016 11 03 add,判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
     //up-down的坐标，判断是否是滑动，如果是，则屏蔽一切点击事件
     private PointF mFirstP = new PointF();
     private boolean isUserSwiped;
@@ -271,7 +271,7 @@ public class SwipeMenuLayout extends ViewGroup {
             final VelocityTracker verTracker = mVelocityTracker;
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    isUserSwiped = false;//2016 11 03 add,回滑只是关闭侧滑菜单，不应该再去触发content的点击事件。
+                    isUserSwiped = false;//2016 11 03 add,判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
                     isUnMoved = true;//2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
                     iosInterceptFlag = false;//add by 2016 09 11 ，每次DOWN时，默认是不拦截的
                     if (isTouching) {//如果有别的指头摸过了，那么就return false。这样后续的move..等事件也不会再来找这个View了。
@@ -280,7 +280,7 @@ public class SwipeMenuLayout extends ViewGroup {
                         isTouching = true;//第一个摸的指头，赶紧改变标志，宣誓主权。
                     }
                     mLastP.set(ev.getRawX(), ev.getRawY());
-                    mFirstP.set(ev.getRawX(), ev.getRawY());//2016 11 03 add,回滑只是关闭侧滑菜单，不应该再去触发content的点击事件。
+                    mFirstP.set(ev.getRawX(), ev.getRawY());//2016 11 03 add,判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
 
                     //如果down，view和cacheview不一样，则立马让它还原。且把它置为null
                     if (mViewCache != null) {
@@ -336,7 +336,7 @@ public class SwipeMenuLayout extends ViewGroup {
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    //2016 11 03 add,回滑只是关闭侧滑菜单，不应该再去触发content的点击事件。
+                    //2016 11 03 add,判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
                     if (Math.abs(ev.getRawX() - mFirstP.x) > mScaleTouchSlop) {
                         isUserSwiped = true;
                     }
@@ -417,7 +417,7 @@ public class SwipeMenuLayout extends ViewGroup {
                     }
                 }
                 //add by zhangxutong 2016 11 03 begin:
-                // 回滑只是关闭侧滑菜单，不应该再去触发content的点击事件
+                // 判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
                 if (isUserSwiped) {
                     return true;
                 }
