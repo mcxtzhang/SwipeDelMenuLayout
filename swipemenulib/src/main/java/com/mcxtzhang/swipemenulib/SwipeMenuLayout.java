@@ -1,5 +1,7 @@
 package com.mcxtzhang.swipemenulib;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.PointF;
@@ -34,6 +36,7 @@ import android.view.animation.OvershootInterpolator;
  * 6 2016 10 21 add , 增加viewChache 的 get()方法，可以用在：当点击外部空白处时，关闭正在展开的侧滑菜单。
  * 7 2016 10 22 fix , 当父控件宽度不是全屏时的bug。
  * 2016 10 22 add , 仿QQ，侧滑菜单展开时，点击除侧滑菜单之外的区域，关闭侧滑菜单。
+ * 8 2016 11 03 add,回滑只是关闭侧滑菜单，不应该再去触发content的点击事件。
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -405,6 +408,12 @@ public class SwipeMenuLayout extends ViewGroup {
                         }
                     }
                 }
+                //add by zhangxutong 2016 11 03 begin:
+                // 回滑只是关闭侧滑菜单，不应该再去触发content的点击事件
+                if (isExpand) {
+                    return true;
+                }
+                //add by zhangxutong 2016 11 03 end
 
                 break;
         }
@@ -422,6 +431,8 @@ public class SwipeMenuLayout extends ViewGroup {
      */
     private ValueAnimator mExpandAnim, mCloseAnim;
 
+    private boolean isExpand;//代表当前是否是展开状态 2016 11 03 add
+
     public void smoothExpand() {
         /*mScroller.startScroll(getScrollX(), 0, mRightMenuWidths - getScrollX(), 0);
         invalidate();*/
@@ -433,6 +444,12 @@ public class SwipeMenuLayout extends ViewGroup {
             }
         });
         mExpandAnim.setInterpolator(new OvershootInterpolator());
+        mExpandAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                isExpand = true;
+            }
+        });
         mExpandAnim.setDuration(300).start();
     }
 
@@ -450,6 +467,12 @@ public class SwipeMenuLayout extends ViewGroup {
             }
         });
         mCloseAnim.setInterpolator(new AnticipateInterpolator());
+        mCloseAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                isExpand = false;
+            }
+        });
         mCloseAnim.setDuration(300).start();
         //LogUtils.d(TAG, "smoothClose() called with:getScrollX() " + getScrollX());
     }
