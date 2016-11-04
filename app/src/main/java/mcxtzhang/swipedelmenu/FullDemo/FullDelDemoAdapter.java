@@ -46,6 +46,16 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
 
         holder.content.setText(mDatas.get(position).name + (position % 2 == 0 ? "我右白虎" : "我左青龙"));
 
+        //验证长按
+        holder.content.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(mContext, "longclig", Toast.LENGTH_SHORT).show();
+                Log.d("TAG", "onLongClick() called with: v = [" + v + "]");
+                return false;
+            }
+        });
+
         holder.btnUnRead.setVisibility(position % 3 == 0 ? View.GONE : View.VISIBLE);
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +73,7 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
         (holder.content).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "" + mDatas.get(holder.getAdapterPosition()).name, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "onClick:" + mDatas.get(holder.getAdapterPosition()).name, Toast.LENGTH_SHORT).show();
                 Log.d("TAG", "onClick() called with: v = [" + v + "]");
             }
         });

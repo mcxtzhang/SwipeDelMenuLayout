@@ -37,6 +37,7 @@ import android.view.animation.OvershootInterpolator;
  * 7 2016 10 22 fix , 当父控件宽度不是全屏时的bug。
  * 2016 10 22 add , 仿QQ，侧滑菜单展开时，点击除侧滑菜单之外的区域，关闭侧滑菜单。
  * 8 2016 11 03 add,判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
+ * 9 2016 11 04 fix 长按事件和侧滑的冲突。
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -391,6 +392,15 @@ public class SwipeMenuLayout extends ViewGroup {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
+            //add by zhangxutong 2016 11 04 begin :
+            // fix 长按事件和侧滑的冲突。
+            case MotionEvent.ACTION_MOVE:
+                //屏蔽滑动时的事件
+                if (Math.abs(ev.getRawX() - mFirstP.x) > mScaleTouchSlop) {
+                    return true;
+                }
+                break;
+            //add by zhangxutong 2016 11 04 end
             case MotionEvent.ACTION_UP:
                 //为了在侧滑时，屏蔽子View的点击事件
                 if (isLeftSwipe) {
