@@ -343,7 +343,7 @@ public class SwipeMenuLayout extends ViewGroup {
                     }
 
                     //add by 2016 09 11 ，IOS模式开启的话，且当前有侧滑菜单的View，且不是自己的，就该拦截事件咯。滑动也不该出现
-                    if (!iosInterceptFlag) {
+                    if (!iosInterceptFlag && isUserSwiped) {//且滑动了 才判断是否要收起、展开menu
                         //求伪瞬时速度
                         verTracker.computeCurrentVelocity(1000, mMaxVelocity);
                         final float velocityX = verTracker.getXVelocity(mPointerId);
