@@ -399,6 +399,22 @@ public class SwipeMenuLayout extends ViewGroup {
                 if (Math.abs(ev.getRawX() - mFirstP.x) > mScaleTouchSlop) {
                     return true;
                 }
+                //能到这里说明是静止的
+                if (isLeftSwipe) {
+                    if (getScrollX() > mScaleTouchSlop) {
+                        if (ev.getX() < getWidth() - getScrollX()) {
+                            smoothClose();
+                            return true;//true表示拦截
+                        }
+                    }
+                } else {
+                    if (-getScrollX() > mScaleTouchSlop) {
+                        if (ev.getX() > -getScrollX()) {
+                            smoothClose();
+                            return true;
+                        }
+                    }
+                }
                 break;
             //add by zhangxutong 2016 11 04 end
             case MotionEvent.ACTION_UP:
