@@ -1,8 +1,8 @@
-# SwipeDelMenuViewGroup
+# SwipeDelMenuLayout
 相关博文：
 http://blog.csdn.net/zxt0601/article/details/52303781
 
-欢迎star 关注 
+喜欢随手点个star 多谢 
 ## 作者相关：
 
 我的CSDN博客：
@@ -12,6 +12,31 @@ http://blog.csdn.net/zxt0601
 ***
 # 重要的话 开头说，not for the RecyclerView or ListView, for the Any ViewGroup.
 本控件不依赖任何父布局，不是针对 RecyclerView、ListView，而是任意的ViewGroup里的childView都可以使用侧滑(删除)菜单。
+
+使用极其方便，**没有任何耦合性** ,直接作为某个ViewGroup的Item的根布局即可。
+
+# 效果一览：
+
+LinearLayout:
+
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/linear.gif)
+
+GridLayoutManager:
+
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/grid.gif)
+
+DoubleSwipe(双向滑动):
+
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/doubleSwipe.gif)
+
+LinearLayoutManager:
+
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/LinearLayoutManager1.gif)
+
+iOS interaction :
+
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/iOS.gif)
+
 
 # 使用：
 Step 1. 在项目根build.gradle文件中增加JitPack仓库依赖。
@@ -31,11 +56,81 @@ Step 2. Add the dependency
 ```
 
 
+Step 3. 在需要侧滑删除的Item外面套上本控件：
+```
+<?xml version="1.0" encoding="utf-8"?>
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:clickable="true"
+    android:paddingBottom="1dp">
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:text="项目中我是任意复杂的原Item布局"/>
+
+    <!-- 以下都是侧滑菜单的内容依序排列 -->
+    <Button
+        android:id="@+id/btnTop"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="#d9dee4"
+        android:text="置顶"
+        android:textColor="@android:color/white"/>
+
+    <Button
+        android:id="@+id/btnUnRead"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:background="#ecd50a"
+        android:clickable="true"
+        android:text="标记未读"
+        android:textColor="@android:color/white"/>
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="@color/red_ff4a57"
+        android:text="删除"
+        android:textColor="@android:color/white"/>
+
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>
+
+```
+
+至此 您就可以使用高仿IOS、QQ 侧滑删除菜单功能了
+
+Step 4.(可选optional)
+如果不想要IOS阻塞式交互效果，或者想打开右滑菜单功能。
+```
+((SwipeMenuLayout) holder.itemView).setIos(false).setLeftSwipe(position % 2 == 0 ? true : false);//这句话关掉IOS阻塞式交互效果 并依次打开左滑右滑
+```
+
+**另外**，
+201609012补充：
+
+在ListView里，点击侧滑菜单上的选项时，如果想让侧滑菜单同时关闭，
+
+将ItemView强转成CstSwipeDelMenu，并调用quickClose()。
+
+如：
+((CstSwipeDelMenu) holder.getConvertView()).quickClose(); 
 
 
+推荐使用RecyclerView， 
+
+在RecyclerView中，如果删除时，建议使用mAdapter.notifyItemRemoved(pos)，
+
+否则删除没有动画效果， 且如果想让侧滑菜单同时关闭，也需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
 
 
-###更新点###
+###更新日志###
 2016 11 09 更新：
 1 适配GridLayoutManager，将以第一个子Item(即ContentItem)的宽度为控件宽度。
 2 使用时，如果需要撑满布局，切记第一个子Item(Content)，宽度要是match_parent.
@@ -90,14 +185,6 @@ Step 2. Add the dependency
 看本文如何巧用static类变量来解决这些矛盾冲突。
 
 【2 功能预览】：
-
-CstSwipeDelMenu 无阻塞式交互效果：
-
-![image](https://github.com/mcxtzhang/SwipeDelMenuViewGroup/blob/master/gif/swipeDelete.gif) 
-
-CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
-
-![image](https://github.com/mcxtzhang/SwipeDelMenuViewGroup/blob/master/gif/swipeDelete2.gif) 
 
 包含且不仅包含以下功能
 
@@ -190,19 +277,3 @@ CstIOSSwipeDelMenu 高仿IOS 阻塞式交互效果：
 ```
 
 
-**另外**，
-201609012补充：
-
-在ListView里，点击侧滑菜单上的选项时，如果想让侧滑菜单同时关闭，
-
-将ItemView强转成CstSwipeDelMenu，并调用quickClose()。
-
-如：
-((CstSwipeDelMenu) holder.getConvertView()).quickClose(); 
-
-
-推荐使用RecyclerView， 
-
-在RecyclerView中，如果删除时，建议使用mAdapter.notifyItemRemoved(pos)，
-
-否则删除没有动画效果， 且如果想让侧滑菜单同时关闭，也需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
