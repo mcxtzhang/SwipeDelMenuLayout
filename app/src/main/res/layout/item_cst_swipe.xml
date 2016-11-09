@@ -12,8 +12,9 @@
         android:layout_height="match_parent"
         android:background="?android:attr/selectableItemBackground"
         android:gravity="center"
-        android:text="试试看"/>
+        android:text="项目中我是任意复杂的原Item布局"/>
 
+    <!-- 以下都是侧滑菜单的内容依序排列 -->
     <Button
         android:id="@+id/btnTop"
         android:layout_width="60dp"
