@@ -106,13 +106,16 @@ Step 3. 在需要侧滑删除的Item外面套上本控件：
 
 ```
 
-至此 您就可以使用高仿IOS、QQ 侧滑删除菜单功能了
+**至此 您就可以使用高仿IOS、QQ 侧滑删除菜单功能了**
+
 
 Step 4.(可选optional)
 如果不想要IOS阻塞式交互效果，或者想打开右滑菜单功能。
 ```
 ((SwipeMenuLayout) holder.itemView).setIos(false).setLeftSwipe(position % 2 == 0 ? true : false);//这句话关掉IOS阻塞式交互效果 并依次打开左滑右滑
 ```
+
+---
 
 **另外**，
 201609012补充：
@@ -131,6 +134,7 @@ Step 4.(可选optional)
 
 否则删除没有动画效果， 且如果想让侧滑菜单同时关闭，也需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
 
+---
 
 ###更新日志###
 2016 11 09 更新：
@@ -163,6 +167,7 @@ Step 4.(可选optional)
 
 
 
+---
 
 
 ***
