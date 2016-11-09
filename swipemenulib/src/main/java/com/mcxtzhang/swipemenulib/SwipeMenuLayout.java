@@ -11,7 +11,6 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
@@ -38,6 +37,7 @@ import android.view.animation.OvershootInterpolator;
  * 2016 10 22 add , 仿QQ，侧滑菜单展开时，点击除侧滑菜单之外的区域，关闭侧滑菜单。
  * 8 2016 11 03 add,判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
  * 9 2016 11 04 fix 长按事件和侧滑的冲突。
+ * 10 2016 11 09 add,适配GridLayoutManager，将以第一个子Item(即ContentItem)的宽度为控件宽度。
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -49,7 +49,6 @@ public class SwipeMenuLayout extends ViewGroup {
     private int mMaxVelocity;//计算滑动速度用
     private int mPointerId;//多点触摸只算第一根手指的速度
     private int mHeight;//自己的高度
-    private int mMaxWidth;//父控件留给自己的最大的水平空间
     /**
      * 右侧菜单宽度总和(最大滑动距离)
      */
@@ -163,16 +162,9 @@ public class SwipeMenuLayout extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //Log.d(TAG, "onMeasure() called with: " + "widthMeasureSpec = [" + widthMeasureSpec + "], heightMeasureSpec = [" + heightMeasureSpec + "]");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        //add by zhangxutong 2016 10 22 for 最大宽度根据父控件计算出，如果没有父控件用屏幕宽度
-        ViewParent parent = getParent();
-        if (parent != null && parent instanceof ViewGroup) {
-            ViewGroup viewGroup = (ViewGroup) parent;
-            mMaxWidth = viewGroup.getMeasuredWidth() - viewGroup.getPaddingLeft() - viewGroup.getPaddingRight();
-        } else {
-            mMaxWidth = getResources().getDisplayMetrics().widthPixels;
-        }
 
         mRightMenuWidths = 0;//由于ViewHolder的复用机制，每次这里要手动恢复初始值
+        int contentWidth = 0;//2016 11 09 add,适配GridLayoutManager，将以第一个子Item(即ContentItem)的宽度为控件宽度
         int childCount = getChildCount();
 
         //add by 2016 08 11 为了子View的高，可以matchParent(参考的FrameLayout 和LinearLayout的Horizontal)
@@ -191,10 +183,12 @@ public class SwipeMenuLayout extends ViewGroup {
                 }
                 if (i > 0) {//第一个布局是Left item，从第二个开始才是RightMenu
                     mRightMenuWidths += childView.getMeasuredWidth();
+                } else {
+                    contentWidth = childView.getMeasuredWidth();
                 }
             }
         }
-        setMeasuredDimension(mMaxWidth, mHeight);//宽度取最大宽度
+        setMeasuredDimension(contentWidth, mHeight);//宽度取第一个Item(Content)的宽度
         mLimit = mRightMenuWidths * 4 / 10;//滑动判断的临界值
         //Log.d(TAG, "onMeasure() called with: " + "mRightMenuWidths = [" + mRightMenuWidths);
         if (isNeedMeasureChildHeight) {//如果子View的height有MatchParent属性的，设置子View高度
@@ -247,8 +241,8 @@ public class SwipeMenuLayout extends ViewGroup {
             View childView = getChildAt(i);
             if (childView.getVisibility() != GONE) {
                 if (i == 0) {//第一个子View是内容 宽度设置为全屏
-                    childView.layout(left, getPaddingTop(), left + mMaxWidth, getPaddingTop() + childView.getMeasuredHeight());
-                    left = left + mMaxWidth;
+                    childView.layout(left, getPaddingTop(), left + childView.getMeasuredWidth(), getPaddingTop() + childView.getMeasuredHeight());
+                    left = left + childView.getMeasuredWidth();
                 } else {
                     if (isLeftSwipe) {
                         childView.layout(left, getPaddingTop(), left + childView.getMeasuredWidth(), getPaddingTop() + childView.getMeasuredHeight());

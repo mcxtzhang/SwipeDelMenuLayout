@@ -36,6 +36,10 @@ Step 2. Add the dependency
 
 
 ###更新点###
+2016 11 09 更新：
+1 适配GridLayoutManager，将以第一个子Item(即ContentItem)的宽度为控件宽度。
+2 使用时，如果需要撑满布局，切记第一个子Item(Content)，宽度要是match_parent.
+
 2016 11 04 更新：
 1 优化了长按事件和侧滑事件的关系，尽量的参考QQ。
 

@@ -2,6 +2,7 @@ package mcxtzhang.swipedelmenu.FullDemo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
@@ -63,7 +64,7 @@ public class FullDelDemoActivity extends Activity {
             }
         });
         mRv.setAdapter(mAdapter);
-        mRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(this));
+        mRv.setLayoutManager(mLayoutManager = new GridLayoutManager(this,2));
 
         //6 2016 10 21 add , 增加viewChache 的 get()方法，
         // 可以用在：当点击外部空白处时，关闭正在展开的侧滑菜单。我个人觉得意义不大，
