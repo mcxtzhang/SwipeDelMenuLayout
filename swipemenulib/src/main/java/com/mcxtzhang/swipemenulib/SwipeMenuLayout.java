@@ -49,14 +49,14 @@ public class SwipeMenuLayout extends ViewGroup {
     private int mMaxVelocity;//计算滑动速度用
     private int mPointerId;//多点触摸只算第一根手指的速度
     private int mHeight;//自己的高度
-    /**
-     * 右侧菜单宽度总和(最大滑动距离)
-     */
+    //右侧菜单宽度总和(最大滑动距离)
     private int mRightMenuWidths;
-    /**
-     * 滑动判定临界值（右侧菜单宽度的40%） 手指抬起时，超过了展开，没超过收起menu
-     */
+
+    //滑动判定临界值（右侧菜单宽度的40%） 手指抬起时，超过了展开，没超过收起menu
     private int mLimit;
+
+    private View mContentView;//2016 11 13 add ，存储contentView(第一个View)
+
     //private Scroller mScroller;//以前item的滑动动画靠它做，现在用属性动画做
     //上一次的xy
     private PointF mLastP = new PointF();
@@ -274,6 +274,7 @@ public class SwipeMenuLayout extends ViewGroup {
             View childView = getChildAt(i);
             if (childView.getVisibility() != GONE) {
                 if (i == 0) {//第一个子View是内容 宽度设置为全屏
+                    mContentView = childView;
                     childView.layout(left, getPaddingTop(), left + childView.getMeasuredWidth(), getPaddingTop() + childView.getMeasuredHeight());
                     left = left + childView.getMeasuredWidth();
                 } else {
@@ -499,6 +500,12 @@ public class SwipeMenuLayout extends ViewGroup {
         invalidate();*/
         //展开就加入ViewCache：
         mViewCache = SwipeMenuLayout.this;
+
+        //2016 11 13 add 侧滑菜单展开，屏蔽content长按
+        if (null != mContentView) {
+            mContentView.setLongClickable(false);
+        }
+
         if (mCloseAnim != null && mCloseAnim.isRunning()) {
             mCloseAnim.cancel();
         }
@@ -526,6 +533,12 @@ public class SwipeMenuLayout extends ViewGroup {
 /*        mScroller.startScroll(getScrollX(), 0, -getScrollX(), 0);
         invalidate();*/
         mViewCache = null;
+
+        //2016 11 13 add 侧滑菜单展开，屏蔽content长按
+        if (null != mContentView) {
+            mContentView.setLongClickable(true);
+        }
+
         if (mExpandAnim != null && mExpandAnim.isRunning()) {
             mExpandAnim.cancel();
         }
