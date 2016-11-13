@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -43,7 +44,6 @@ import android.view.animation.OvershootInterpolator;
  */
 public class SwipeMenuLayout extends ViewGroup {
     private static final String TAG = "zxt";
-    private boolean isSwipeEnable = true;//右滑删除功能的开关,默认开
 
     private int mScaleTouchSlop;//为了处理单击事件的冲突
     private int mMaxVelocity;//计算滑动速度用
@@ -79,12 +79,22 @@ public class SwipeMenuLayout extends ViewGroup {
     private VelocityTracker mVelocityTracker;//滑动速度变量
     private android.util.Log LogUtils;
 
-    private boolean isIos = true;//IOS类型的开关
+    /**
+     * 右滑删除功能的开关,默认开
+     */
+    private boolean isSwipeEnable;
 
-    private boolean iosInterceptFlag = false;//IOS类型下，是否拦截事件的flag
+    /**
+     * IOS、QQ式交互，默认开
+     */
+    private boolean isIos;
 
-    //20160929add 左滑右滑的开关
-    private boolean isLeftSwipe = true;
+    private boolean iosInterceptFlag;//IOS类型下，是否拦截事件的flag
+
+    /**
+     * 20160929add 左滑右滑的开关,默认左滑打开菜单
+     */
+    private boolean isLeftSwipe;
 
     public SwipeMenuLayout(Context context) {
         this(context, null);
@@ -96,7 +106,7 @@ public class SwipeMenuLayout extends ViewGroup {
 
     public SwipeMenuLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init(context, attrs, defStyleAttr);
     }
 
     public boolean isSwipeEnable() {
@@ -151,11 +161,34 @@ public class SwipeMenuLayout extends ViewGroup {
         return mViewCache;
     }
 
-    private void init(Context context) {
+    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         mScaleTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mMaxVelocity = ViewConfiguration.get(context).getScaledMaximumFlingVelocity();
         //初始化滑动帮助类对象
         //mScroller = new Scroller(context);
+
+        //右滑删除功能的开关,默认开
+        isSwipeEnable = true;
+        //IOS、QQ式交互，默认开
+        isIos = true;
+        //左滑右滑的开关,默认左滑打开菜单
+        isLeftSwipe = true;
+        TypedArray ta = context.getTheme().obtainStyledAttributes(attrs, R.styleable.SwipeMenuLayout, defStyleAttr, 0);
+        int count = ta.getIndexCount();
+        for (int i = 0; i < count; i++) {
+            int attr = ta.getIndex(i);
+            //如果引用成AndroidLib 资源都不是常量，无法使用switch case
+            if (attr == R.styleable.SwipeMenuLayout_swipeEnable) {
+                isSwipeEnable = ta.getBoolean(attr, true);
+            } else if (attr == R.styleable.SwipeMenuLayout_ios) {
+                isIos = ta.getBoolean(attr, true);
+            } else if (attr == R.styleable.SwipeMenuLayout_leftSwipe) {
+                isLeftSwipe = ta.getBoolean(attr, true);
+            }
+        }
+        ta.recycle();
+
+
     }
 
     @Override
