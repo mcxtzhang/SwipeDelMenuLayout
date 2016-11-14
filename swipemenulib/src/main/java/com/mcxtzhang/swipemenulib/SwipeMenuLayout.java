@@ -12,7 +12,7 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.animation.AnticipateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 /**
@@ -39,6 +39,9 @@ import android.view.animation.OvershootInterpolator;
  * 8 2016 11 03 add,判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
  * 9 2016 11 04 fix 长按事件和侧滑的冲突。
  * 10 2016 11 09 add,适配GridLayoutManager，将以第一个子Item(即ContentItem)的宽度为控件宽度。
+ * 11 2016 11 14 add,支持padding,且后续计划加入上滑下滑，因此不再支持ContentItem的margin属性。
+ * 2016 11 14 add,修改回弹的动画，更平滑。
+ * 2016 11 14 fix,微小位移的move不再触发滑动
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -196,6 +199,8 @@ public class SwipeMenuLayout extends ViewGroup {
         //Log.d(TAG, "onMeasure() called with: " + "widthMeasureSpec = [" + widthMeasureSpec + "], heightMeasureSpec = [" + heightMeasureSpec + "]");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
+        setClickable(true);//令自己可点击，从而获取触摸事件
+
         mRightMenuWidths = 0;//由于ViewHolder的复用机制，每次这里要手动恢复初始值
         int contentWidth = 0;//2016 11 09 add,适配GridLayoutManager，将以第一个子Item(即ContentItem)的宽度为控件宽度
         int childCount = getChildCount();
@@ -206,22 +211,27 @@ public class SwipeMenuLayout extends ViewGroup {
 
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
+            //令每一个子View可点击，从而获取触摸事件
+            childView.setClickable(true);
             if (childView.getVisibility() != GONE) {
-                //measureChild(childView, widthMeasureSpec, heightMeasureSpec);
-                measureChildWithMargins(childView, widthMeasureSpec, 0, heightMeasureSpec, 0);
+                //后续计划加入上滑、下滑，则将不再支持Item的margin
+                measureChild(childView, widthMeasureSpec, heightMeasureSpec);
+                //measureChildWithMargins(childView, widthMeasureSpec, 0, heightMeasureSpec, 0);
                 final MarginLayoutParams lp = (MarginLayoutParams) childView.getLayoutParams();
-                mHeight = Math.max(mHeight, childView.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);
+                mHeight = Math.max(mHeight, childView.getMeasuredHeight()/* + lp.topMargin + lp.bottomMargin*/);
                 if (measureMatchParentChildren && lp.height == LayoutParams.MATCH_PARENT) {
                     isNeedMeasureChildHeight = true;
                 }
                 if (i > 0) {//第一个布局是Left item，从第二个开始才是RightMenu
                     mRightMenuWidths += childView.getMeasuredWidth();
                 } else {
+                    mContentView = childView;
                     contentWidth = childView.getMeasuredWidth();
                 }
             }
         }
-        setMeasuredDimension(contentWidth, mHeight);//宽度取第一个Item(Content)的宽度
+        setMeasuredDimension(getPaddingLeft() + getPaddingRight() + contentWidth,
+                mHeight + getPaddingTop() + getPaddingBottom());//宽度取第一个Item(Content)的宽度
         mLimit = mRightMenuWidths * 4 / 10;//滑动判断的临界值
         //Log.d(TAG, "onMeasure() called with: " + "mRightMenuWidths = [" + mRightMenuWidths);
         if (isNeedMeasureChildHeight) {//如果子View的height有MatchParent属性的，设置子View高度
@@ -269,12 +279,11 @@ public class SwipeMenuLayout extends ViewGroup {
         //LogUtils.e(TAG, "onLayout() called with: " + "changed = [" + changed + "], l = [" + l + "], t = [" + t + "], r = [" + r + "], b = [" + b + "]");
         int childCount = getChildCount();
         int left = 0 + getPaddingLeft();
-        int right = 0;
+        int right = 0 + getPaddingLeft();
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
             if (childView.getVisibility() != GONE) {
                 if (i == 0) {//第一个子View是内容 宽度设置为全屏
-                    mContentView = childView;
                     childView.layout(left, getPaddingTop(), left + childView.getMeasuredWidth(), getPaddingTop() + childView.getMeasuredHeight());
                     left = left + childView.getMeasuredWidth();
                 } else {
@@ -533,7 +542,7 @@ public class SwipeMenuLayout extends ViewGroup {
                 scrollTo((Integer) animation.getAnimatedValue(), 0);
             }
         });
-        mCloseAnim.setInterpolator(new AnticipateInterpolator());
+        mCloseAnim.setInterpolator(new AccelerateInterpolator());
         mCloseAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
