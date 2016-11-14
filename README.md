@@ -2,42 +2,67 @@
 [![](https://jitpack.io/v/mcxtzhang/SwipeDelMenuLayout.svg)](https://jitpack.io/#mcxtzhang/SwipeDelMenuLayout)
 
 相关博文：
-http://blog.csdn.net/zxt0601/article/details/52303781
+从0实现V1.0版本
+http://blog.csdn.net/zxt0601/article/details/52303781 
+
+V1.2版本的更新和改动以及使用
+http://blog.csdn.net/zxt0601/article/details/53157090
 
 喜欢随手点个star 多谢 
-## 作者相关：
+##  在哪里找到我：
+我的github：
+
+https://github.com/mcxtzhang
 
 我的CSDN博客：
 
 http://blog.csdn.net/zxt0601
 
+我的稀土掘金：
+
+http://gold.xitu.io/user/56de210b816dfa0052e66495
+
+我的简书：
+
+http://www.jianshu.com/users/8e91ff99b072/timeline
+
 ***
 # 重要的话 开头说，not for the RecyclerView or ListView, for the Any ViewGroup.
-本控件不依赖任何父布局，不是针对 RecyclerView、ListView，而是任意的ViewGroup里的childView都可以使用侧滑(删除)菜单。
+本控件**不依赖任何**父布局，不是针对 RecyclerView、ListView，而是**任意的ViewGroup**里的childView都可以使用侧滑(删除)菜单。
 
-使用极其方便，**没有任何耦合性** ,直接作为某个ViewGroup的Item的根布局即可。
+# 概述
 
-# 效果一览：
+本控件从撸出来在项目使用至今已经过去7个月，距离第一次将它push至github上，也已经2月+。（之前，我发表过一篇文章。传送门:http://gold.xitu.io/entry/57d1115dbf22ec005f9593c6/detail, 里面详细描述了本控件V1.0版本是怎么实现的。）
 
-LinearLayout:
 
-![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/linear.gif)
+期间有很多朋友在评论、issue里提出了一些**改进**意见，例如支持设置滑动方向（左右）、高仿QQ的交互、支持GridLayoutManager等，以及一些**bug**。已经被我**全部实、修复**。并且将其打包至jitpack，引入**更方便**。和第一版相比，改动挺多的。故将其整理，新发一版。
 
-GridLayoutManager:
+那么本文先从如何使用它讲起，然后介绍它包含的特性、支持的属性。最后就几个难点和冲突的解决进行讲解。
 
-![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/grid.gif)
+代码传送门：喜欢的话，随手点个star。多谢
+https://github.com/mcxtzhang/SwipeDelMenuLayout
 
-DoubleSwipe(双向滑动):
+先上四个gif给各位看官感受一下最新版的魅力（以下版本都顺便展示了可选的双向滑动）
 
-![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/doubleSwipe.gif)
 
-LinearLayoutManager:
+Android Special Version （无阻塞式，侧滑菜单展开时，依然可以展开其他侧滑菜单，同时上一个菜单会自动关闭）:
 
-![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/LinearLayoutManager1.gif)
+![](http://ac-mhke0kuv.clouddn.com/349c2e791cfdc66689af.gif)
 
-iOS interaction :
+GridLayoutManager （和上图的代码比，只需修改RecyclerView的LayoutManager。）:
 
-![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/iOS.gif)
+![](http://ac-mhke0kuv.clouddn.com/a38c499163aaa3e8f1a2.gif)
+
+LinearLayout （不需任何修改，连LinearLayout也可以简单的实现侧滑菜单）:
+
+![](http://ac-mhke0kuv.clouddn.com/708e6cfad34391cb12d6.gif)
+
+iOS interaction （阻塞式交互，高仿QQ，侧滑菜单展开式，屏蔽其他ITEM所有操作）:
+
+![](http://ac-mhke0kuv.clouddn.com/f2a0690adddeda016dee.gif)
+
+
+
 
 
 # 使用：
@@ -52,13 +77,17 @@ Step 1. 在项目根build.gradle文件中增加JitPack仓库依赖。
 ```
 Step 2. Add the dependency
 ```
-	dependencies {
+    dependencies {
 	        compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.0'
 	}
 ```
 
 
-Step 3. 在需要侧滑删除的Item外面套上本控件：
+Step 3. 在需要侧滑删除的ContentItem外面套上本控件，在本控件内依次排列ContentItem、菜单即可：
+**至此 您就可以使用高仿IOS、QQ 侧滑删除菜单功能了**
+（侧滑菜单的点击事件等是通过设置的id取到，与其他控件一致，不再赘述）
+
+Demo里，我的ContentItem是一个TextView，那么我就在其外嵌套本控件，并且以侧滑菜单出现的顺序，依次排列菜单控件即可。
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <com.mcxtzhang.swipemenulib.SwipeMenuLayout
@@ -74,7 +103,7 @@ Step 3. 在需要侧滑删除的Item外面套上本控件：
         android:layout_height="match_parent"
         android:background="?android:attr/selectableItemBackground"
         android:gravity="center"
-        android:text="项目中我是任意复杂的原Item布局"/>
+        android:text="项目中我是任意复杂的原ContentItem布局"/>
 
     <!-- 以下都是侧滑菜单的内容依序排列 -->
     <Button
@@ -106,16 +135,59 @@ Step 3. 在需要侧滑删除的Item外面套上本控件：
 
 ```
 
-**至此 您就可以使用高仿IOS、QQ 侧滑删除菜单功能了**
 
-
-Step 4.(可选optional)
-如果不想要IOS阻塞式交互效果，或者想打开右滑菜单功能。
-```
-((SwipeMenuLayout) holder.itemView).setIos(false).setLeftSwipe(position % 2 == 0 ? true : false);//这句话关掉IOS阻塞式交互效果 并依次打开左滑右滑
-```
 
 ---
+
+# 支持属性：
+1 通过 isIos 变量控制是否是IOS阻塞式交互，默认是打开的。
+2 通过 isSwipeEnable 变量控制是否开启右滑菜单，默认打开。（某些场景，复用item，没有编辑权限的用户不能右滑）
+3 通过开关 isLeftSwipe支持左滑右滑
+
+有两种方式设置：
+一：xml：
+
+```xml
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:ios="false"
+    app:leftSwipe="true"
+    app:swipeEnable="true">
+```
+
+二： java代码：
+```java
+//这句话关掉IOS阻塞式交互效果 并依次打开左滑右滑  禁用掉侧滑菜单
+((SwipeMenuLayout) holder.itemView).setIos(false).setLeftSwipe(position % 2 == 0 ? true : false).setSwipeEnable(false);
+```
+
+# 支持特性：
+
+* 不会同时展开2+个侧滑菜单。（可见界面上最多只会出现一个侧滑菜单）。
+* 侧滑过程中，禁止父控件上下滑动。
+* 多指同时滑动，屏蔽后触摸的几根手指。
+* 增加viewChache 的 get()方法，可以用在：当点击外部空白处时，关闭正在展开的侧滑菜单。
+* 以第一个子Item(即ContentItem)的宽度为控件宽度
+
+
+# 每次更新的checklist：
+由于持续迭代，会发生完成一个feature、fix一个bug后，导致新的bug。
+so，整理一份checkList，供每次迭代后验证，都通过，才会push到github库上。
+
+项目 | 备注 | 验证
+--- |----------| ---
+isIos | 切换至IOS阻塞交互模式、Android特色无阻塞交互模式 以下feature都可正常工作|
+isSwipeEnable | 是否支持关闭侧滑功能
+isLeftSwipe | 是否支持双向滑动
+ContentItem内容可单击 | 
+ContentItem内容可长按 |
+侧滑菜单显示时，ContentItem不可点击 |
+侧滑菜单显示时，ContentItem不可长按 |
+侧滑菜单显示时，侧滑菜单可以点击 |
+侧滑菜单显示时，点击ContentItem区域关闭菜单 |
+侧滑过程中，屏蔽长按事件 |
+通过滑动关闭菜单，不应该触发ContentItem点击事件 |
+
 
 **另外**，
 201609012补充：
@@ -168,118 +240,3 @@ Step 4.(可选optional)
 
 
 ---
-
-
-***
-【1 序言】
-侧滑删除的轮子网上有很多，最初在github上看过一个，还是ListView时代，那是一个自定义ListView 实现侧滑删除的，当初就觉得这种做法不是最佳，万一我项目里又同时有自定义ListView的需求，会增加复杂度。
-
-写这篇文章之前又通过毒度搜了一下，排名前几的CSDN文章，都是通过自定义ListVIew和ViewGropup实现的滑动删除。
-
-况且现在是RecyclerView时代，难不成我要把那些代码再自定义RecyclerView写一遍么。
-
-我想说No，网上大多数的做法代码侵入性太强，尽量不要继承 ListVIew 做什么事，换成 RecyclerView 呢，扩展性太局限了，
-
-本文的做法只要在 Item 的根布局换成这个 自定义ViewGroup 即可，完全不 care 你用 RecyclerView 还是 ListVIew，耦合性为 0
-
-
-听说隔壁iOS 侧滑删除是一个系统自带的控件，那么我们Android党能否也自定义一个ViewGroup控件，然后一劳永逸，每次简单拿来用就好了呢?
-
-自定义ViewGroup实现侧滑删除简单，难得是还要同时 处理多指滑动的屏蔽，防止两个侧滑菜单同时出现，等等，
-
-有办法将这些东西都用一个ViewGroup搞定么？
-
-看本文如何巧用static类变量来解决这些矛盾冲突。
-
-【2 功能预览】：
-
-包含且不仅包含以下功能
-
-1 侧滑拉出菜单。
-
-2 点击除了这个item的其他位置，菜单关闭。
-
-3 侧滑过程中，不许父控件上下滑动。
-
-4 多指同时滑动，屏蔽后触摸的几根手指。
-
-5 不会同时展开两个侧滑菜单。
-
-6 侧滑菜单时 拦截了长按事件。
-
-7 侧滑时，拦截了点击事件
-
-8 通过开关 isLeftSwipe支持左滑右滑
-【3 使用预览】
-
-需要效果一 ：//((CstSwipeDelMenu)holder.getConvertView()).setIos(false);//这句话关掉IOS阻塞式交互效果
-
-需要效果二 ：直接使用，可能大部分公司比较钟爱IOS效果，我忍痛默认IOS
-
-
-```
-<?xml version="1.0" encoding="utf-8"?>
-<mcxtzhang.swipedelmenu.view.CstSwipeDelMenu xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true">
-
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Content布局，项目中替换成你原来的Item布局" />
-
-    <Button
-        android:id="@+id/btnDelete"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
-        android:background="@color/red_ff4a57"
-        android:text="删除" />
-
-    <Button
-        android:id="@+id/update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:text="更新" />
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@color/red_ff4a57"
-        android:clickable="true">
-
-        <TextView
-            android:id="@+id/tv_delete"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:drawablePadding="5dp"
-            android:drawableTop="@drawable/point_icon_delete"
-            android:gravity="center"
-            android:text="删除"
-            android:textColor="@android:color/white" />
-    </RelativeLayout>
-
-</mcxtzhang.swipedelmenu.view.CstSwipeDelMenu>
-```
-
-就这么简单，
-只需要在 侧滑删除的item的layout的xml里，将父控件换成我们的自定义ViewGroup即可。
-
-第一个子View放置item的内容即可(正式项目里一般是一个ViewGroup)，
-
-从第二个子View开始，是我们的侧滑菜单区域，如我们的demo图，是三个Button。
-
-```
-//注意事项，设置item点击，不能对整个holder.itemView设置咯，只能对第一个子View，即原来的content设置，这算是局限性吧。
-(holder.content).setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        Toast.makeText(mContext, ""+mDatas.get(position).name, Toast.LENGTH_SHORT).show();
-    }
-});
-```
-
