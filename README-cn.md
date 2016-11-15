@@ -84,6 +84,7 @@ Step 2. Add the dependency
 
 
 Step 3. 在需要侧滑删除的ContentItem外面套上本控件，在本控件内依次排列ContentItem、菜单即可：
+
 **至此 您就可以使用高仿IOS、QQ 侧滑删除菜单功能了**
 （侧滑菜单的点击事件等是通过设置的id取到，与其他控件一致，不再赘述）
 
@@ -135,7 +136,7 @@ Demo里，我的ContentItem是一个TextView，那么我就在其外嵌套本控
 
 ```
 
-# 唯一注意事项：
+**唯一注意事项**：
 若是在ListView、RecyclerView中使用，点击事件正确的设置应该是在 Adapter  里对 ContentItem 设置，不能使用listview.setOnItemClickListener。
 因为此时 Item 是本控件了，不是里面的 ContentItem 那块区域了，且本控件区域有很多触摸的判断，内部包含 ContentItem 和侧滑菜单 Menu。
 
