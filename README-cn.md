@@ -135,6 +135,10 @@ Demo里，我的ContentItem是一个TextView，那么我就在其外嵌套本控
 
 ```
 
+# 唯一注意事项：
+若是在ListView、RecyclerView中使用，点击事件正确的设置应该是在 Adapter  里对 ContentItem 设置，不能使用listview.setOnItemClickListener。
+因为此时 Item 是本控件了，不是里面的 ContentItem 那块区域了，且本控件区域有很多触摸的判断，内部包含 ContentItem 和侧滑菜单 Menu。
+
 
 
 ---
