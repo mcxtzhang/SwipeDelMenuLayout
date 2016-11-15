@@ -130,6 +130,9 @@ Demo, I ContentItem is a TextView, then I'm in the outside its nested controls, 
 
 ```
 
+**One Tips**：
+If it is used in the ListView, RecyclerView, click event Settings should be correct in the Adapter for ContentItem Settings, cannot use ListView. SetOnItemClickListener.
+When the Item is control, not the ContentItem inside the area, and there are a lot of touch judge the control area, internal contain ContentItem and sideslip Menu Menu.
 
 
 ---
@@ -150,7 +153,7 @@ One：xml：
     app:swipeEnable="true">
 ```
 
-Other： java代码：
+Other： java Codes：
 ```java
 //这句话关掉IOS阻塞式交互效果 并依次打开左滑右滑  禁用掉侧滑菜单
 ((SwipeMenuLayout) holder.itemView).setIos(false).setLeftSwipe(position % 2 == 0 ? true : false).setSwipeEnable(false);
