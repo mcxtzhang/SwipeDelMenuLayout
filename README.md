@@ -1,6 +1,8 @@
 # SwipeDelMenuLayout
 [![](https://jitpack.io/v/mcxtzhang/SwipeDelMenuLayout.svg)](https://jitpack.io/#mcxtzhang/SwipeDelMenuLayout)
 
+#### [中文版文档](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/README-cn.md)
+
 Related blog:
 V1.0:
 http://blog.csdn.net/zxt0601/article/details/52303781 
