@@ -42,24 +42,28 @@ http://www.jianshu.com/users/8e91ff99b072/timeline
 代码传送门：喜欢的话，随手点个star。多谢
 https://github.com/mcxtzhang/SwipeDelMenuLayout
 
-先上四个gif给各位看官感受一下最新版的魅力（以下版本都顺便展示了可选的双向滑动）
+先上几个gif给各位看官感受一下最新版的魅力（以下版本都顺便展示了可选的双向滑动）
 
+本控件最大魅力就是0耦合,所以先上配合我另一个库组装的效果(ItemDecorationIndexBar + SwipeMenuLayout)：
+(ItemDecorationIndexBar : https://github.com/mcxtzhang/ItemDecorationIndexBar)
+
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/ItemDecorationIndexBar_SwipeDel.gif)
 
 Android Special Version （无阻塞式，侧滑菜单展开时，依然可以展开其他侧滑菜单，同时上一个菜单会自动关闭）:
 
-![](http://ac-mhke0kuv.clouddn.com/349c2e791cfdc66689af.gif)
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/LinearLayoutManager1.gif)
 
 GridLayoutManager （和上图的代码比，只需修改RecyclerView的LayoutManager。）:
 
-![](http://ac-mhke0kuv.clouddn.com/a38c499163aaa3e8f1a2.gif)
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/grid.gif)
 
 LinearLayout （不需任何修改，连LinearLayout也可以简单的实现侧滑菜单）:
 
-![](http://ac-mhke0kuv.clouddn.com/708e6cfad34391cb12d6.gif)
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/linear.gif)
 
 iOS interaction （阻塞式交互，高仿QQ，侧滑菜单展开式，屏蔽其他ITEM所有操作）:
 
-![](http://ac-mhke0kuv.clouddn.com/f2a0690adddeda016dee.gif)
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/iOS.gif)
 
 
 

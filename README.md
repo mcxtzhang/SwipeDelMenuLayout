@@ -37,23 +37,27 @@ This control has since rolled out in the project use over the past seven months,
 During a lot of friends in the comment, put forward some improvement of * * * * in the issue, such as support setting sliding direction (or so), high imitation QQ interaction, support GridLayoutManager etc, as well as some bug * * * *. I have been all real, repair * * * *. And its packaging to jitpack, introducing more convenient * * * *. Compared to the first edition, change a lot. So to arrange, new version.
 So this paper start with how to use it, and then introduces the features of it contains, in support of the property. Finally a few difficulties and conflict resolution.
 
+ItemDecorationIndexBar + SwipeMenuLayout
+(The biggest charm is 0 coupling at the controls,So, you see first to cooperate with me another library assembly effect)：
+(ItemDecorationIndexBar : https://github.com/mcxtzhang/ItemDecorationIndexBar)
 
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/ItemDecorationIndexBar_SwipeDel.gif)
 
 Android Special Version （Without blocking type, when the lateral spreads menus, still can be expanded to other side menu, at the same time on a menu will automatically shut down）:
 
-![](http://ac-mhke0kuv.clouddn.com/349c2e791cfdc66689af.gif)
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/LinearLayoutManager1.gif)
 
 GridLayoutManager （And the above code than, need to modify RecyclerView LayoutManager）:
 
-![](http://ac-mhke0kuv.clouddn.com/a38c499163aaa3e8f1a2.gif)
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/grid.gif)
 
 LinearLayout （Without any modification, even can simple LinearLayout implementation side menu）:
 
-![](http://ac-mhke0kuv.clouddn.com/708e6cfad34391cb12d6.gif)
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/linear.gif)
 
 iOS interaction （Block type interaction, high imitation QQ, sideslip menu expansion, blocking other ITEM all operations）:
 
-![](http://ac-mhke0kuv.clouddn.com/f2a0690adddeda016dee.gif)
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/iOS.gif)
 
 
 
