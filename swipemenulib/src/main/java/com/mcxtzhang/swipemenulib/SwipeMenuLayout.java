@@ -42,6 +42,7 @@ import android.view.animation.OvershootInterpolator;
  * 11 2016 11 14 add,支持padding,且后续计划加入上滑下滑，因此不再支持ContentItem的margin属性。
  * 2016 11 14 add,修改回弹的动画，更平滑。
  * 2016 11 14 fix,微小位移的move不回回弹的bug
+ * 2016 11 18,fix 当ItemView存在高度可变的情况
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -202,6 +203,7 @@ public class SwipeMenuLayout extends ViewGroup {
         setClickable(true);//令自己可点击，从而获取触摸事件
 
         mRightMenuWidths = 0;//由于ViewHolder的复用机制，每次这里要手动恢复初始值
+        mHeight = 0;
         int contentWidth = 0;//2016 11 09 add,适配GridLayoutManager，将以第一个子Item(即ContentItem)的宽度为控件宽度
         int childCount = getChildCount();
 
@@ -380,7 +382,7 @@ public class SwipeMenuLayout extends ViewGroup {
                     }
 
                     //add by 2016 09 11 ，IOS模式开启的话，且当前有侧滑菜单的View，且不是自己的，就该拦截事件咯。滑动也不该出现
-                    if (!iosInterceptFlag ) {//且滑动了 才判断是否要收起、展开menu
+                    if (!iosInterceptFlag) {//且滑动了 才判断是否要收起、展开menu
                         //求伪瞬时速度
                         verTracker.computeCurrentVelocity(1000, mMaxVelocity);
                         final float velocityX = verTracker.getXVelocity(mPointerId);
