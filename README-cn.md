@@ -140,10 +140,24 @@ Demo里，我的ContentItem是一个TextView，那么我就在其外嵌套本控
 
 ```
 
-**唯一注意事项**：
-若是在ListView、RecyclerView中使用，点击事件正确的设置应该是在 Adapter  里对 ContentItem 设置，不能使用listview.setOnItemClickListener。
+**注意事项**：
+* 若是在ListView、RecyclerView中使用，点击事件正确的设置应该是在 Adapter  里对 ContentItem 设置，不能使用listview.setOnItemClickListener。
 因为此时 Item 是本控件了，不是里面的 ContentItem 那块区域了，且本控件区域有很多触摸的判断，内部包含 ContentItem 和侧滑菜单 Menu。
 
+* 在ListView中使用，
+在ListView里，点击侧滑菜单上的选项时，如果想让侧滑菜单同时关闭，
+
+将ItemView强转成CstSwipeDelMenu，并调用quickClose()。
+
+如：
+((CstSwipeDelMenu) holder.getConvertView()).quickClose(); 
+
+
+推荐使用RecyclerView， 
+
+在RecyclerView中，如果删除时，建议使用mAdapter.notifyItemRemoved(pos)，
+
+否则删除没有动画效果， 且如果想让侧滑菜单同时关闭，也需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
 
 
 ---
@@ -197,23 +211,6 @@ ContentItem内容可长按 |
 侧滑过程中，屏蔽长按事件 |
 通过滑动关闭菜单，不应该触发ContentItem点击事件 |
 
-
-**另外**，
-201609012补充：
-
-在ListView里，点击侧滑菜单上的选项时，如果想让侧滑菜单同时关闭，
-
-将ItemView强转成CstSwipeDelMenu，并调用quickClose()。
-
-如：
-((CstSwipeDelMenu) holder.getConvertView()).quickClose(); 
-
-
-推荐使用RecyclerView， 
-
-在RecyclerView中，如果删除时，建议使用mAdapter.notifyItemRemoved(pos)，
-
-否则删除没有动画效果， 且如果想让侧滑菜单同时关闭，也需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
 
 ---
 
