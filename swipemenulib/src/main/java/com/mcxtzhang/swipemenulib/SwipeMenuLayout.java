@@ -430,7 +430,7 @@ public class SwipeMenuLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        // TODO: 2016/12/7 0007  暂时修改 临时解决滑动关闭状态下子控件点击事件会被屏蔽的bug
+        //add by SparkChenZ 2016/12/7 0007  暂时修改 临时解决滑动关闭状态下子控件点击事件会被屏蔽的bug
         if(isSwipeEnable) {
             switch (ev.getAction()) {
                 //add by zhangxutong 2016 11 04 begin :
