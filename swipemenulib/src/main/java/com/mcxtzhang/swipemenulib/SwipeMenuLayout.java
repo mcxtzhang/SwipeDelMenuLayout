@@ -479,7 +479,8 @@ public class SwipeMenuLayout extends ViewGroup {
             //IOS模式开启，且当前有菜单的View，且不是自己的 拦截点击事件给子View
             return true;
         }
-
+        // TODO: 2016/12/7 0007  暂时修改 临时解决滑动关闭状态下子控件点击事件会被屏蔽的bug
+        mFirstP.set(ev.getRawX(), ev.getRawY());
         return super.onInterceptTouchEvent(ev);
     }
 
