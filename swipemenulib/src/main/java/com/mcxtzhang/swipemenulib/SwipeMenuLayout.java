@@ -43,6 +43,7 @@ import android.view.animation.OvershootInterpolator;
  * 2016 11 14 add,修改回弹的动画，更平滑。
  * 2016 11 14 fix,微小位移的move不回回弹的bug
  * 2016 11 18,fix 当ItemView存在高度可变的情况
+ * 2016 12 07,fix 禁止侧滑时(isSwipeEnable false)，点击事件不受干扰。
  * Created by zhangxutong .
  * Date: 16/04/24
  */
@@ -430,56 +431,59 @@ public class SwipeMenuLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
-            //add by zhangxutong 2016 11 04 begin :
-            // fix 长按事件和侧滑的冲突。
-            case MotionEvent.ACTION_MOVE:
-                //屏蔽滑动时的事件
-                if (Math.abs(ev.getRawX() - mFirstP.x) > mScaleTouchSlop) {
-                    return true;
-                }
-                break;
-            //add by zhangxutong 2016 11 04 end
-            case MotionEvent.ACTION_UP:
-                //为了在侧滑时，屏蔽子View的点击事件
-                if (isLeftSwipe) {
-                    if (getScrollX() > mScaleTouchSlop) {
-                        //add by 2016 09 10 解决一个智障问题~ 居然不给点击侧滑菜单 我跪着谢罪
-                        //这里判断落点在内容区域屏蔽点击，内容区域外，允许传递事件继续向下的的。。。
-                        if (ev.getX() < getWidth() - getScrollX()) {
-                            //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
-                            if (isUnMoved) {
-                                smoothClose();
+        //add by zhangxutong 2016 12 07 begin:
+        //禁止侧滑时，点击事件不受干扰。
+        if (isSwipeEnable) {
+            switch (ev.getAction()) {
+                //add by zhangxutong 2016 11 04 begin :
+                // fix 长按事件和侧滑的冲突。
+                case MotionEvent.ACTION_MOVE:
+                    //屏蔽滑动时的事件
+                    if (Math.abs(ev.getRawX() - mFirstP.x) > mScaleTouchSlop) {
+                        return true;
+                    }
+                    break;
+                //add by zhangxutong 2016 11 04 end
+                case MotionEvent.ACTION_UP:
+                    //为了在侧滑时，屏蔽子View的点击事件
+                    if (isLeftSwipe) {
+                        if (getScrollX() > mScaleTouchSlop) {
+                            //add by 2016 09 10 解决一个智障问题~ 居然不给点击侧滑菜单 我跪着谢罪
+                            //这里判断落点在内容区域屏蔽点击，内容区域外，允许传递事件继续向下的的。。。
+                            if (ev.getX() < getWidth() - getScrollX()) {
+                                //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
+                                if (isUnMoved) {
+                                    smoothClose();
+                                }
+                                return true;//true表示拦截
                             }
-                            return true;//true表示拦截
+                        }
+                    } else {
+                        if (-getScrollX() > mScaleTouchSlop) {
+                            if (ev.getX() > -getScrollX()) {//点击范围在菜单外 屏蔽
+                                //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
+                                if (isUnMoved) {
+                                    smoothClose();
+                                }
+                                return true;
+                            }
                         }
                     }
-                } else {
-                    if (-getScrollX() > mScaleTouchSlop) {
-                        if (ev.getX() > -getScrollX()) {//点击范围在菜单外 屏蔽
-                            //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
-                            if (isUnMoved) {
-                                smoothClose();
-                            }
-                            return true;
-                        }
+                    //add by zhangxutong 2016 11 03 begin:
+                    // 判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
+                    if (isUserSwiped) {
+                        return true;
                     }
-                }
-                //add by zhangxutong 2016 11 03 begin:
-                // 判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
-                if (isUserSwiped) {
-                    return true;
-                }
-                //add by zhangxutong 2016 11 03 end
+                    //add by zhangxutong 2016 11 03 end
 
-                break;
+                    break;
+            }
+            //模仿IOS 点击其他区域关闭：
+            if (iosInterceptFlag) {
+                //IOS模式开启，且当前有菜单的View，且不是自己的 拦截点击事件给子View
+                return true;
+            }
         }
-        //模仿IOS 点击其他区域关闭：
-        if (iosInterceptFlag) {
-            //IOS模式开启，且当前有菜单的View，且不是自己的 拦截点击事件给子View
-            return true;
-        }
-
         return super.onInterceptTouchEvent(ev);
     }
 
