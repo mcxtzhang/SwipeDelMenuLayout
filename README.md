@@ -77,7 +77,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```
     dependencies {
-	        compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.3'
+	        compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.4'
 	}
 ```
 
@@ -203,6 +203,9 @@ Or delete no animation effects, and if you want to let the sideslip menu closed 
 ---
 
 ###Update log###
+2016 12 07 update：
+ * When the isSwipeEnable is false，the click event of contentItem is undisturbed。
+ 
 2016 11 14 update:
 * support the padding, and the subsequent slide down on plans to join, so no longer support ContentItem margin properties.
 * modify the springback of animation, more smooth.

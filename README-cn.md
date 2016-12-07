@@ -82,7 +82,7 @@ Step 1. 在项目根build.gradle文件中增加JitPack仓库依赖。
 Step 2. Add the dependency
 ```
     dependencies {
-	        compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.3'
+	        compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.4'
 	}
 ```
 
@@ -215,6 +215,9 @@ ContentItem内容可长按 |
 ---
 
 ###更新日志###
+2016 12 07 更新：
+ * 禁止侧滑时(isSwipeEnable false)，点击事件不受干扰。
+ 
 2016 11 14 更新：
  * 支持padding,且后续计划加入上滑下滑，因此不再支持ContentItem的margin属性。
  * 修改回弹的动画，更平滑。
