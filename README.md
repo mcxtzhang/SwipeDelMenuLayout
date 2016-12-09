@@ -204,6 +204,9 @@ Or delete no animation effects, and if you want to let the sideslip menu closed 
 
 ###Update log###
 2016 12 07 update：
+ * Fix a bug :when using ListView，quick swipe and quick click del menu, next Item is Swiped.。
+ 
+2016 12 07 update：
  * When the isSwipeEnable is false，the click event of contentItem is undisturbed。
  
 2016 11 14 update:
