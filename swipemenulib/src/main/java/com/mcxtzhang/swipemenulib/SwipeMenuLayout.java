@@ -44,11 +44,12 @@ import android.view.animation.OvershootInterpolator;
  * 2016 11 14 fix,微小位移的move不回回弹的bug
  * 2016 11 18,fix 当ItemView存在高度可变的情况
  * 2016 12 07,fix 禁止侧滑时(isSwipeEnable false)，点击事件不受干扰。
+ * 2016 12 09,fix ListView快速滑动快速删除时，偶现菜单不消失的bug。
  * Created by zhangxutong .
  * Date: 16/04/24
  */
 public class SwipeMenuLayout extends ViewGroup {
-    private static final String TAG = "zxt";
+    private static final String TAG = "zxt/SwipeMenuLayout";
 
     private int mScaleTouchSlop;//为了处理单击事件的冲突
     private int mMaxVelocity;//计算滑动速度用
@@ -495,6 +496,7 @@ public class SwipeMenuLayout extends ViewGroup {
     private boolean isExpand;//代表当前是否是展开状态 2016 11 03 add
 
     public void smoothExpand() {
+        //Log.d(TAG, "smoothExpand() called" + this);
         /*mScroller.startScroll(getScrollX(), 0, mRightMenuWidths - getScrollX(), 0);
         invalidate();*/
         //展开就加入ViewCache：
@@ -505,9 +507,7 @@ public class SwipeMenuLayout extends ViewGroup {
             mContentView.setLongClickable(false);
         }
 
-        if (mCloseAnim != null && mCloseAnim.isRunning()) {
-            mCloseAnim.cancel();
-        }
+        cancelAnim();
         mExpandAnim = ValueAnimator.ofInt(getScrollX(), isLeftSwipe ? mRightMenuWidths : -mRightMenuWidths);
         mExpandAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -526,9 +526,22 @@ public class SwipeMenuLayout extends ViewGroup {
     }
 
     /**
+     * 每次执行动画之前都应该先取消之前的动画
+     */
+    private void cancelAnim() {
+        if (mCloseAnim != null && mCloseAnim.isRunning()) {
+            mCloseAnim.cancel();
+        }
+        if (mExpandAnim != null && mExpandAnim.isRunning()) {
+            mExpandAnim.cancel();
+        }
+    }
+
+    /**
      * 平滑关闭
      */
     public void smoothClose() {
+        //Log.d(TAG, "smoothClose() called" + this);
 /*        mScroller.startScroll(getScrollX(), 0, -getScrollX(), 0);
         invalidate();*/
         mViewCache = null;
@@ -538,9 +551,7 @@ public class SwipeMenuLayout extends ViewGroup {
             mContentView.setLongClickable(true);
         }
 
-        if (mExpandAnim != null && mExpandAnim.isRunning()) {
-            mExpandAnim.cancel();
-        }
+        cancelAnim();
         mCloseAnim = ValueAnimator.ofInt(getScrollX(), 0);
         mCloseAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -628,9 +639,7 @@ public class SwipeMenuLayout extends ViewGroup {
     public void quickClose() {
         if (this == mViewCache) {
             //先取消展开动画
-            if (null != mExpandAnim && mExpandAnim.isRunning()) {
-                mExpandAnim.cancel();
-            }
+            cancelAnim();
             mViewCache.scrollTo(0, 0);//关闭
             mViewCache = null;
         }
