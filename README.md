@@ -43,6 +43,11 @@ ItemDecorationIndexBar + SwipeMenuLayout
 
 ![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/ItemDecorationIndexBar_SwipeDel.gif)
 
+Casually to use in a flow layout also easy:
+
+![](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/FlowSwipe.gif)
+
+
 Android Special Version （Without blocking type, when the lateral spreads menus, still can be expanded to other side menu, at the same time on a menu will automatically shut down）:
 
 ![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/LinearLayoutManager1.gif)
