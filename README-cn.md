@@ -49,6 +49,11 @@ https://github.com/mcxtzhang/SwipeDelMenuLayout
 
 ![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/ItemDecorationIndexBar_SwipeDel.gif)
 
+随便来个流式布局也不在话下：
+
+![](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/FlowSwipe.gif)
+
+
 Android Special Version （无阻塞式，侧滑菜单展开时，依然可以展开其他侧滑菜单，同时上一个菜单会自动关闭）:
 
 ![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/LinearLayoutManager1.gif)
@@ -64,6 +69,7 @@ LinearLayout （不需任何修改，连LinearLayout也可以简单的实现侧�
 iOS interaction （阻塞式交互，高仿QQ，侧滑菜单展开式，屏蔽其他ITEM所有操作）:
 
 ![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/iOS.gif)
+
 
 
 
