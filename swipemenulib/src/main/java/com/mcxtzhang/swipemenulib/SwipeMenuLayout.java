@@ -102,6 +102,11 @@ public class SwipeMenuLayout extends ViewGroup {
      */
     private boolean isLeftSwipe;
 
+    /**
+     * 20170109add 左右横跳
+     */
+    private boolean isLeftRightSwipe;
+
     public SwipeMenuLayout(Context context) {
         this(context, null);
     }
@@ -190,6 +195,8 @@ public class SwipeMenuLayout extends ViewGroup {
                 isIos = ta.getBoolean(attr, true);
             } else if (attr == R.styleable.SwipeMenuLayout_leftSwipe) {
                 isLeftSwipe = ta.getBoolean(attr, true);
+            } else if (attr == R.styleable.SwipeMenuLayout_leftrightSwipe) {
+                isLeftRightSwipe = ta.getBoolean(attr, false);
             }
         }
         ta.recycle();
@@ -360,6 +367,10 @@ public class SwipeMenuLayout extends ViewGroup {
                     //越界修正
                     if (isLeftSwipe) {//左滑
                         if (getScrollX() < 0) {
+                            if (isLeftRightSwipe){
+                                isLeftSwipe = false;
+                                requestLayout();
+                            }
                             scrollTo(0, 0);
                         }
                         if (getScrollX() > mRightMenuWidths) {
@@ -370,6 +381,10 @@ public class SwipeMenuLayout extends ViewGroup {
                             scrollTo(-mRightMenuWidths, 0);
                         }
                         if (getScrollX() > 0) {
+                            if (isLeftRightSwipe){
+                                isLeftSwipe = true;
+                                requestLayout();
+                            }
                             scrollTo(0, 0);
                         }
                     }

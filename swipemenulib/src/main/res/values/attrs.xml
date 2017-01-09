@@ -4,5 +4,6 @@
         <attr name="swipeEnable" format="boolean"/>
         <attr name="ios" format="boolean"/>
         <attr name="leftSwipe" format="boolean"/>
+        <attr name="leftrightSwipe" format="boolean" />
     </declare-styleable>
 </resources>
