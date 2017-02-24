@@ -34,7 +34,7 @@ http://www.jianshu.com/users/8e91ff99b072/timeline
 # Intro
 
 This control has since rolled out in the project use over the past seven months, distance on a push to making it the first time, also has + 2 month. (before, I published an article. Portal: http://gold.xitu.io/entry/57d1115dbf22ec005f9593c6/detail, it describes in detail the control how V1.0 version is done.)
-During a lot of friends in the comment, put forward some improvement of * * * * in the issue, such as support setting sliding direction (or so), high imitation QQ interaction, support GridLayoutManager etc, as well as some bug * * * *. I have been all real, repair * * * *. And its packaging to jitpack, introducing more convenient * * * *. Compared to the first edition, change a lot. So to arrange, new version.
+During a lot of friends in the comment, put forward some improvement of ** in the issue, such as support setting sliding direction (or so), high imitation QQ interaction, support GridLayoutManager etc, as well as some bug **. I have been all real, repair **. And its packaging to jitpack, introducing more convenient**. Compared to the first edition, change a lot. So to arrange, new version.
 So this paper start with how to use it, and then introduces the features of it contains, in support of the property. Finally a few difficulties and conflict resolution.
 
 ItemDecorationIndexBar + SwipeMenuLayout
@@ -181,7 +181,7 @@ Other： java Codes：
 Will happen due to the last iteration, after completing a feature, fix a bug that caused new bug.
 So, to sort out a checkList for validation after each iteration, all through, will push to making library.
 
-项目 | 备注 | 验证
+feature | desc | verify 
 --- |----------| ---
 isIos | Switch to the IOS obstruction interaction patterns, Android features non-blocking feature under interactive mode can work normally|
 isSwipeEnable |Whether to support close function of sideslip
@@ -198,12 +198,12 @@ By sliding off the menu, should not trigger ContentItem click event  |
 
 **In addition**，
 In a ListView, click on the menu of sideslip options, if you want the sideslip menu closed at the same time,
-Will into CstSwipeDelMenu ItemView is strong, and call the quickClose ().
+Will into CstSwipeDelMenu ItemView is strong, and call the `quickClose()`.
 Such as:
-((CstSwipeDelMenu) holder. GetConvertView ()). QuickClose ();
+`((CstSwipeDelMenu) holder. GetConvertView ()). QuickClose ();`
 It is recommended to use RecyclerView,
 In RecyclerView, if deleted, it is recommended to use mAdapter. NotifyItemRemoved (pos),
-Or delete no animation effects, and if you want to let the sideslip menu closed at the same time, also need to call at the same time ((CstSwipeDelMenu) holder. ItemView). QuickClose ();
+Or delete no animation effects, and if you want to let the sideslip menu closed at the same time, also need to call at the same time `((CstSwipeDelMenu) holder. ItemView). QuickClose ();`
 
 ---
 
