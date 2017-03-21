@@ -42,7 +42,7 @@ public class FullDelDemoActivity extends Activity {
         mAdapter.setOnDelListener(new FullDelDemoAdapter.onSwipeListener() {
             @Override
             public void onDel(int pos) {
-                if (pos > 0 && pos < mDatas.size()) {
+                if (pos >= 0 && pos < mDatas.size()) {
                     Toast.makeText(FullDelDemoActivity.this, "删除:" + pos, Toast.LENGTH_SHORT).show();
                     mDatas.remove(pos);
                     mAdapter.notifyItemRemoved(pos);//推荐用这个
