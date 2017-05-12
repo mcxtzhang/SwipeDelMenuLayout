@@ -52,6 +52,8 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
             public boolean onLongClick(View v) {
                 Toast.makeText(mContext, "longclig", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", "onLongClick() called with: v = [" + v + "]");
+                ((SwipeMenuLayout) holder.itemView).setSwipeEnable(false);
+                // SwipeMenuLayout.resetIsTouching(); by licrynoob@gmail.com
                 return false;
             }
         });
