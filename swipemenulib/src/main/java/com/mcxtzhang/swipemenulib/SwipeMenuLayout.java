@@ -645,4 +645,13 @@ public class SwipeMenuLayout extends ViewGroup {
         }
     }
 
+    /**
+     * If setSwipeEnable false before ACTION_DOWN/ACTION_CANCEL,
+     * this ACTION_DOWN/ACTION_CANCEL will interceptTouchEvent by mIsSwipeEnable(false),
+     * such as when onLongCLick, setSwipeEnable false.
+     */
+    public static void resetIsTouching() {
+        isTouching = false;
+    }
+    
 }
