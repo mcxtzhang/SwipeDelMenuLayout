@@ -342,38 +342,41 @@ public class SwipeMenuLayout extends ViewGroup {
                     if (iosInterceptFlag) {
                         break;
                     }
-                    float gap = mLastP.x - ev.getRawX();
-                    //为了在水平滑动中禁止父类ListView等再竖直滑动
-                    if (Math.abs(gap) > 10 || Math.abs(getScrollX()) > 10) {//2016 09 29 修改此处，使屏蔽父布局滑动更加灵敏，
-                        getParent().requestDisallowInterceptTouchEvent(true);
+                    float gapX = mLastP.x - ev.getRawX();
+                    float gapY = mLastP.y - ev.getRawy();
+                    // Make sure scroll on X distance
+                    if (Math.abs(gapX) > Math.abs(gapY)) {
+                        //为了在水平滑动中禁止父类ListView等再竖直滑动
+                        if (Math.abs(gapX) > 10 || Math.abs(getScrollX()) > 10) {//2016 09 29 修改此处，使屏蔽父布局滑动更加灵敏，
+                            getParent().requestDisallowInterceptTouchEvent(true);
+                        }
+                        //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。begin
+                        if (Math.abs(gapX) > mScaleTouchSlop) {
+                            isUnMoved = false;
+                        }
+                        //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。end
+                        //如果scroller还没有滑动结束 停止滑动动画
+                        /*  if (!mScroller.isFinished()) {
+                            mScroller.abortAnimation();
+                        }*/
+                        scrollBy((int) (gapX), 0);//滑动使用scrollBy
+                        //越界修正
+                        if (isLeftSwipe) {//左滑
+                            if (getScrollX() < 0) {
+                                scrollTo(0, 0);
+                            }
+                            if (getScrollX() > mRightMenuWidths) {
+                                scrollTo(mRightMenuWidths, 0);
+                            }
+                        } else {//右滑
+                            if (getScrollX() < -mRightMenuWidths) {
+                                scrollTo(-mRightMenuWidths, 0);
+                            }
+                            if (getScrollX() > 0) {
+                                scrollTo(0, 0);
+                            }
+                        }
                     }
-                    //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。begin
-                    if (Math.abs(gap) > mScaleTouchSlop) {
-                        isUnMoved = false;
-                    }
-                    //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。end
-                    //如果scroller还没有滑动结束 停止滑动动画
-/*                    if (!mScroller.isFinished()) {
-                        mScroller.abortAnimation();
-                    }*/
-                    scrollBy((int) (gap), 0);//滑动使用scrollBy
-                    //越界修正
-                    if (isLeftSwipe) {//左滑
-                        if (getScrollX() < 0) {
-                            scrollTo(0, 0);
-                        }
-                        if (getScrollX() > mRightMenuWidths) {
-                            scrollTo(mRightMenuWidths, 0);
-                        }
-                    } else {//右滑
-                        if (getScrollX() < -mRightMenuWidths) {
-                            scrollTo(-mRightMenuWidths, 0);
-                        }
-                        if (getScrollX() > 0) {
-                            scrollTo(0, 0);
-                        }
-                    }
-
                     mLastP.set(ev.getRawX(), ev.getRawY());
                     break;
                 case MotionEvent.ACTION_UP:
