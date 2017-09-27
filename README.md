@@ -64,6 +64,8 @@ iOS interaction （Block type interaction, high imitation QQ, sideslip menu expa
 
 ![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/iOS.gif)
 
+use in ViewPager：
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/viewpager.gif)
 
 
 
@@ -82,7 +84,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```
     dependencies {
-	        compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.5'
+	        compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
 	}
 ```
 
@@ -208,6 +210,10 @@ Or delete no animation effects, and if you want to let the sideslip menu closed 
 ---
 
 ###Update log###
+2017 09 27 update:
+* solving sliding conflicts in ViewPager:CstViewPager
+Because ViewPager and SwipMenuLayout are horizontal sliding controls. So, when used together, there will be conflicts. Using CstViewPager, you can use left slider on the first page of ViewPager. Use the right click menu on the last page of ViewPager.
+
 2016 12 07 update：
  * Fix a bug :when using ListView，quick swipe and quick click del menu, next Item is Swiped.。
  

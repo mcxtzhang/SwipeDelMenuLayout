@@ -70,6 +70,8 @@ iOS interaction （阻塞式交互，高仿QQ，侧滑菜单展开式，屏蔽�
 
 ![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/iOS.gif)
 
+在ViewPager中使用：
+![image](https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/gif/viewpager.gif)
 
 
 
@@ -88,7 +90,7 @@ Step 1. 在项目根build.gradle文件中增加JitPack仓库依赖。
 Step 2. Add the dependency
 ```
     dependencies {
-	        compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.5'
+	        compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
 	}
 ```
 
@@ -166,6 +168,14 @@ Demo里，我的ContentItem是一个TextView，那么我就在其外嵌套本控
 否则删除没有动画效果， 且如果想让侧滑菜单同时关闭，也需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
 
 
+* 在ViewPager中使用：
+用`CstViewPager`替换`ViewPager`，解决滑动冲突
+```
+    <com.mcxtzhang.swipemenulib.CstViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.mcxtzhang.swipemenulib.CstViewPager>
+```
 ---
 
 # 支持属性：
@@ -221,6 +231,10 @@ ContentItem内容可长按 |
 ---
 
 ###更新日志###
+2017 09 27更新：
+* 解决 滑动冲突的 ViewPager：CstViewPager
+因为ViewPager 和 SwipMenuLayout都是水平方向滑动的控件。所以在一起使用时会有冲突，使用CstViewPager，可以在ViewPager的第一页使用左滑。在ViewPager的最后一页使用右滑菜单。
+
 2016 12 09更新：
 * ListView快速滑动快速删除时，偶现菜单不消失的bug。
 
