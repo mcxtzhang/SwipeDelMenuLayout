@@ -29,7 +29,7 @@ public class LinearLayoutDelDemoActivity extends AppCompatActivity {
         });
 
 
-        LinearLayout llContent2 = (LinearLayout) findViewById(R.id.llContent);
+        LinearLayout llContent2 = (LinearLayout) findViewById(R.id.llContent2);
         llContent2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -30,7 +30,7 @@ public class ListViewDelDemoActivity extends AppCompatActivity {
         mLv.setAdapter(new CommonAdapter<SwipeBean>(this, mDatas, R.layout./*item_swipe_menu*/item_cst_swipe) {
             @Override
             public void convert(final ViewHolder holder, SwipeBean swipeBean, final int position) {
-                //((CstSwipeDelMenu)holder.getConvertView()).setIos(false);//这句话关掉IOS阻塞式交互效果
+                //((SwipeMenuLayout)holder.getConvertView()).setIos(false);//这句话关掉IOS阻塞式交互效果
                 holder.setText(R.id.content, swipeBean.name);
                 holder.setOnClickListener(R.id.content, new View.OnClickListener() {
                     @Override
