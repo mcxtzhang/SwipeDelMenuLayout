@@ -78,7 +78,7 @@ public class FullDemoFragment extends Fragment {
         mAdapter = new CommonAdapter<SwipeBean>(getContext(), mDatas, R.layout.item_cst_swipe) {
             @Override
             public void convert(final ViewHolder holder, SwipeBean swipeBean) {
-                ((SwipeMenuLayout) holder.itemView).setLeftSwipe(mIndex == 0 ? false : true);//这句话关掉IOS阻塞式交互效果 并依次打开左滑右滑
+                ((SwipeMenuLayout) holder.itemView).setIos(true).setLeftSwipe(mIndex == 0 ? false : true);// 并依次打开左滑右滑
 
                 holder.setText(R.id.content, swipeBean.name + (mIndex == 0 ? "我左青龙" : "我右白虎"));
 
