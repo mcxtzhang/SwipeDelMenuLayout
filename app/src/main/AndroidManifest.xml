@@ -21,6 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name="mcxtzhang.swipedelmenu.viewpager.ViewPagerActivity">
+        </activity>
     </application>
 
 </manifest>

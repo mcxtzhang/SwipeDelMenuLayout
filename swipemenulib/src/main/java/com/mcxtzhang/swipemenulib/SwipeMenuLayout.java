@@ -432,6 +432,7 @@ public class SwipeMenuLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        //Log.d(TAG, "onInterceptTouchEvent() called with: ev = [" + ev + "]");
         //add by zhangxutong 2016 12 07 begin:
         //禁止侧滑时，点击事件不受干扰。
         if (isSwipeEnable) {

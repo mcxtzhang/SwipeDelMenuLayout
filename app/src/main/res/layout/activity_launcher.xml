@@ -14,17 +14,25 @@
 
     <Button
         android:id="@+id/rv"
-        android:text="完整的RecyclerViewDemo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="完整的RecyclerViewDemo"/>
+
     <Button
         android:id="@+id/lv"
-        android:text="ListView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="ListView"/>
+
     <Button
         android:id="@+id/ll"
-        android:text="线性布局LinearLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="线性布局LinearLayout"/>
+
+    <Button
+        android:id="@+id/viewPager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ViewPager"/>
 </LinearLayout>
