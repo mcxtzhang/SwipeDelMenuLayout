@@ -19,12 +19,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile project (':swipemenulib')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:23.4.0'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:recyclerview-v7:23.4.0'
+    implementation project(':swipemenulib')
     //Adapter终结者 地址：https://github.com/mcxtzhang/all-base-adapter
-    compile 'com.github.mcxtzhang:all-base-adapter:V1.5.2'
+    implementation 'com.github.mcxtzhang:all-base-adapter:V1.5.2'
 
 }
