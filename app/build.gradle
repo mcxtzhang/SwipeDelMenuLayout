@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "mcxtzhang.swipedelmenu"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -19,12 +19,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile project (':swipemenulib')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation project(':swipemenulib')
     //Adapter终结者 地址：https://github.com/mcxtzhang/all-base-adapter
-    compile 'com.github.mcxtzhang:all-base-adapter:V1.5.2'
+    implementation 'com.github.mcxtzhang:all-base-adapter:V1.5.2'
 
 }

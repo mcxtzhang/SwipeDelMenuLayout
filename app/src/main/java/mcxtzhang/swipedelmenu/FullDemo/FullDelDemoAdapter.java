@@ -1,7 +1,6 @@
 package mcxtzhang.swipedelmenu.FullDemo;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
@@ -28,6 +29,7 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
     private Context mContext;
     private LayoutInflater mInfalter;
     private List<SwipeBean> mDatas;
+    private onSwipeListener mOnSwipeListener;
 
     public FullDelDemoAdapter(Context context, List<SwipeBean> mDatas) {
         mContext = context;
@@ -81,7 +83,7 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
         holder.btnTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=mOnSwipeListener){
+                if (null != mOnSwipeListener) {
                     mOnSwipeListener.onTop(holder.getAdapterPosition());
                 }
 
@@ -94,6 +96,14 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
         return null != mDatas ? mDatas.size() : 0;
     }
 
+    public onSwipeListener getOnDelListener() {
+        return mOnSwipeListener;
+    }
+
+    public void setOnDelListener(onSwipeListener mOnDelListener) {
+        this.mOnSwipeListener = mOnDelListener;
+    }
+
     /**
      * 和Activity通信的接口
      */
@@ -101,16 +111,6 @@ public class FullDelDemoAdapter extends RecyclerView.Adapter<FullDelDemoAdapter.
         void onDel(int pos);
 
         void onTop(int pos);
-    }
-
-    private onSwipeListener mOnSwipeListener;
-
-    public onSwipeListener getOnDelListener() {
-        return mOnSwipeListener;
-    }
-
-    public void setOnDelListener(onSwipeListener mOnDelListener) {
-        this.mOnSwipeListener = mOnDelListener;
     }
 
     class FullDelDemoVH extends RecyclerView.ViewHolder {
