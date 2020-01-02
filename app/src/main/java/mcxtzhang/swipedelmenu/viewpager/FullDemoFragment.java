@@ -2,16 +2,17 @@ package mcxtzhang.swipedelmenu.viewpager;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mcxtzhang.commonadapter.rv.CommonAdapter;
 import com.mcxtzhang.commonadapter.rv.ViewHolder;
@@ -33,6 +34,13 @@ import mcxtzhang.swipedelmenu.SwipeBean;
  */
 
 public class FullDemoFragment extends Fragment {
+    private static final String TAG = "zxt";
+    private RecyclerView mRecyclerView;
+    private CommonAdapter<SwipeBean> mAdapter;
+    private LinearLayoutManager mLayoutManager;
+    private List<SwipeBean> mDatas;
+    private int mIndex;
+
     public static FullDemoFragment newInstance(int position) {
         Bundle args = new Bundle();
         FullDemoFragment fragment = new FullDemoFragment();
@@ -46,13 +54,6 @@ public class FullDemoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mIndex = getArguments().getInt("index");
     }
-
-    private static final String TAG = "zxt";
-    private RecyclerView mRecyclerView;
-    private CommonAdapter<SwipeBean> mAdapter;
-    private LinearLayoutManager mLayoutManager;
-    private List<SwipeBean> mDatas;
-    private int mIndex;
 
     @Nullable
     @Override
@@ -78,7 +79,7 @@ public class FullDemoFragment extends Fragment {
         mAdapter = new CommonAdapter<SwipeBean>(getContext(), mDatas, R.layout.item_cst_swipe) {
             @Override
             public void convert(final ViewHolder holder, SwipeBean swipeBean) {
-                ((SwipeMenuLayout) holder.itemView).setIos(true).setLeftSwipe(mIndex == 0 ? false : true);// 并依次打开左滑右滑
+                ((SwipeMenuLayout) holder.itemView).setIos(true).setLeftSwipe(mIndex != 0);// 并依次打开左滑右滑
 
                 holder.setText(R.id.content, swipeBean.name + (mIndex == 0 ? "我左青龙" : "我右白虎"));
 
